@@ -180,6 +180,7 @@ const EstimateForm = ({ trigger }: { trigger?: React.ReactNode }) => {
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 };
 
