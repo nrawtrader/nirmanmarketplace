@@ -1,6 +1,7 @@
-import { ShoppingCart, Package } from "lucide-react";
+import { Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/data/products";
+import EstimateForm from "./EstimateForm";
 
 interface ProductCardProps {
   product: Product;
