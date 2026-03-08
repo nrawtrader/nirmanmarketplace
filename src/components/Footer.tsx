@@ -48,7 +48,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li className="flex items-center gap-2"><Phone className="w-4 h-4" /> +91 98765 43210</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> hello@buildmart.in</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> hello@nirmanmarketplace.in</li>
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5" /> Bangalore, India</li>
             </ul>
           </div>
