@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Calculator, ShoppingBag, ChevronDown } from "lucide-react";
+import EstimateForm from "./EstimateForm";
 
 const HeroSection = () => {
   return (
@@ -53,16 +54,16 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 h-12 shadow-lg">
+          <EstimateForm trigger={
+            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 h-12 shadow-lg">
+              <ShoppingBag className="w-5 h-5 mr-2" />
+              Get Estimate
+            </Button>
+          } />
+          <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8 h-12">
             <Link to="/calculator">
               <Calculator className="w-5 h-5 mr-2" />
-              Estimate My Materials
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="text-base px-8 h-12">
-            <Link to="/products">
-              <ShoppingBag className="w-5 h-5 mr-2" />
-              Shop Materials
+              Material Calculator
             </Link>
           </Button>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -75,15 +75,16 @@ const EstimateForm = ({ trigger }: { trigger?: React.ReactNode }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <>
+      <div onClick={() => setOpen(true)} className="inline-block cursor-pointer">
         {trigger || (
           <Button className="bg-accent text-accent-foreground hover:bg-accent/90 h-11 px-6">
             <ShoppingCart className="w-4 h-4 mr-2" /> Get Estimate
           </Button>
         )}
-      </DialogTrigger>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+      </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Request Material Estimate</DialogTitle>
           <p className="text-sm text-muted-foreground">Add items you need and we'll send you the best prices.</p>
@@ -179,6 +180,7 @@ const EstimateForm = ({ trigger }: { trigger?: React.ReactNode }) => {
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 };
 
