@@ -259,9 +259,14 @@ const Calculator = () => {
                     <CardContent className="pt-6 text-center">
                       <p className="text-sm text-primary-foreground/70 mb-1">Estimated Total Material Cost</p>
                       <p className="text-3xl font-bold">{formatCurrency(costs.total)}</p>
-                      <p className="text-xs text-primary-foreground/50 mt-2">
-                        *Material cost only. Labour, finishing, fittings not included. Prices may vary by region.
-                      </p>
+                       <p className="text-xs text-primary-foreground/50 mt-2 mb-4">
+                         *Material cost only. Labour, finishing, fittings not included. Prices may vary by region.
+                       </p>
+                       <EstimateForm trigger={
+                         <Button variant="secondary" className="h-11 px-6">
+                           Get Estimate with Brands
+                         </Button>
+                       } />
                     </CardContent>
                   </Card>
 
