@@ -17,7 +17,7 @@ import {
   estimateCost,
   formatCurrency,
 } from "@/data/calculator";
-import { Calculator as CalcIcon, Package, Hammer, Mountain, Boxes, Brick, ArrowRight, RotateCcw } from "lucide-react";
+import { Calculator as CalcIcon, Package, Hammer, Mountain, Boxes, Square, ArrowRight, RotateCcw } from "lucide-react";
 
 const Calculator = () => {
   const [input, setInput] = useState<CalculatorInput>({
