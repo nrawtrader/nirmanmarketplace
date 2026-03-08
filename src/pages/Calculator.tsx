@@ -47,7 +47,7 @@ const Calculator = () => {
     { icon: Hammer, label: "Steel (TMT)", value: `${materials.steel} tons`, cost: formatCurrency(costs.steel), color: "bg-primary/10" },
     { icon: Mountain, label: "Sand", value: `${materials.sand} m³`, cost: formatCurrency(costs.sand), color: "bg-accent/10" },
     { icon: Boxes, label: "Aggregate", value: `${materials.aggregate} m³`, cost: formatCurrency(costs.aggregate), color: "bg-muted" },
-    { icon: Brick, label: "Bricks", value: `${materials.bricks.toLocaleString("en-IN")}`, cost: formatCurrency(costs.bricks), color: "bg-destructive/10" },
+    { icon: Square, label: "Bricks", value: `${materials.bricks.toLocaleString("en-IN")}`, cost: formatCurrency(costs.bricks), color: "bg-destructive/10" },
   ] : [];
 
   return (
