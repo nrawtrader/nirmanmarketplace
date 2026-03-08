@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Calculator, ShoppingBag, ChevronDown } from "lucide-react";
+import EstimateForm from "./EstimateForm";
 
 const HeroSection = () => {
   return (
