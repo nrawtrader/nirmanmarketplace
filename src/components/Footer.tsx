@@ -55,7 +55,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center text-sm text-primary-foreground/50">
-          © {new Date().getFullYear()} BuildMart. All rights reserved. Built for homeowners, by builders.
+          © {new Date().getFullYear()} Nirman MarketPlace. All rights reserved. Built for homeowners, by builders.
         </div>
       </div>
     </footer>

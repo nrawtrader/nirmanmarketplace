@@ -23,7 +23,7 @@ const Navbar = () => {
               <HardHat className="w-5 h-5 text-primary-foreground group-hover:text-accent-foreground transition-colors" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              BuildMart
+              Nirman MarketPlace
             </span>
           </Link>
 

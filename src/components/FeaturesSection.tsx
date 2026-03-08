@@ -41,7 +41,7 @@ const FeaturesSection = () => {
     <section className="section-padding bg-background" ref={ref}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
-          <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Why BuildMart</p>
+          <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Why Nirman MarketPlace</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
             Everything You Need to Build Smart
           </h2>
