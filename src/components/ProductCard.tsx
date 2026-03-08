@@ -30,9 +30,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <span className="text-xl font-bold text-foreground">₹{product.price.toLocaleString("en-IN")}</span>
             <span className="text-xs text-muted-foreground ml-1">/ {product.unit}</span>
           </div>
-          <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <ShoppingCart className="w-4 h-4 mr-1" /> Add
-          </Button>
+          <EstimateForm trigger={
+            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              Get Estimate
+            </Button>
+          } />
         </div>
       </div>
     </div>
