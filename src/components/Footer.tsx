@@ -13,7 +13,7 @@ const Footer = () => {
                 <HardHat className="w-5 h-5 text-accent-foreground" />
               </div>
               <span className="text-xl font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                BuildMart
+                Nirman MarketPlace
               </span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
@@ -48,14 +48,14 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li className="flex items-center gap-2"><Phone className="w-4 h-4" /> +91 98765 43210</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> hello@buildmart.in</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> hello@nirmanmarketplace.in</li>
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5" /> Bangalore, India</li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center text-sm text-primary-foreground/50">
-          © {new Date().getFullYear()} BuildMart. All rights reserved. Built for homeowners, by builders.
+          © {new Date().getFullYear()} Nirman MarketPlace. All rights reserved. Built for homeowners, by builders.
         </div>
       </div>
     </footer>
