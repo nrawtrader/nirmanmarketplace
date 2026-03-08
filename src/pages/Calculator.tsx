@@ -17,6 +17,7 @@ import {
   estimateCost,
   formatCurrency,
 } from "@/data/calculator";
+// Force cache refresh
 import { Calculator as CalcIcon, Package, Hammer, Mountain, Boxes, Square, ArrowRight, RotateCcw } from "lucide-react";
 
 const Calculator = () => {
