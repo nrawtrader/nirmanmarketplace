@@ -13,7 +13,7 @@ const Footer = () => {
                 <HardHat className="w-5 h-5 text-accent-foreground" />
               </div>
               <span className="text-xl font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                BuildMart
+                Nirman MarketPlace
               </span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
