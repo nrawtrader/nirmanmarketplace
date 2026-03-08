@@ -74,15 +74,21 @@ const EstimateForm = ({ trigger }: { trigger?: React.ReactNode }) => {
     setName("");
   };
 
+  const handleOpen = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(true);
+  };
+
   return (
     <>
-      <div onClick={() => setOpen(true)} className="inline-block cursor-pointer">
+      <span onClick={handleOpen} onMouseDown={(e) => e.stopPropagation()} className="inline-block cursor-pointer" role="button" tabIndex={0}>
         {trigger || (
-          <Button className="bg-accent text-accent-foreground hover:bg-accent/90 h-11 px-6">
+          <Button type="button" className="bg-accent text-accent-foreground hover:bg-accent/90 h-11 px-6">
             <ShoppingCart className="w-4 h-4 mr-2" /> Get Estimate
           </Button>
         )}
-      </div>
+      </span>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
