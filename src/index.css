@@ -106,6 +106,13 @@
   }
 }
 
+@layer components {
+  /* Glassmorphism panel */
+  .glass-panel {
+    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+  }
+}
+
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;
@@ -169,4 +176,9 @@
 
 .animate-scroll-reveal {
   animation: scroll-reveal 0.8s ease-out forwards;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }

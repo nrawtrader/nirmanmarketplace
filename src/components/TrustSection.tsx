@@ -1,5 +1,6 @@
 import { ShieldCheck, IndianRupee, Truck } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const trustItems = [
   {
@@ -20,37 +21,39 @@ const trustItems = [
 ];
 
 const TrustSection = () => {
-  const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.2 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="section-padding bg-primary text-primary-foreground" ref={ref}>
-      <div className="max-w-5xl mx-auto text-center">
-        <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Trust</p>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-14">Why Homeowners Choose Us</h2>
+    <section className="section-padding bg-primary text-primary-foreground relative overflow-hidden" ref={ref}>
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+      
+      <div className="max-w-5xl mx-auto text-center relative">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="text-sm font-semibold text-accent uppercase tracking-[0.2em] mb-3">Trust</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-14">Why Homeowners Choose Us</h2>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {trustItems.map((item, i) => (
-            <div
+            <motion.div
               key={item.title}
-              className={visible ? "animate-scroll-reveal" : "opacity-0"}
-              style={{ animationDelay: `${i * 0.15}s` }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className="group"
             >
-              <div className="w-14 h-14 rounded-xl bg-accent/15 flex items-center justify-center mx-auto mb-4">
+              <div className="w-14 h-14 rounded-xl bg-accent/15 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/25 group-hover:scale-110 transition-all duration-300">
                 <item.icon className="w-7 h-7 text-accent" />
               </div>
               <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
               <p className="text-sm text-primary-foreground/70 leading-relaxed">{item.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
