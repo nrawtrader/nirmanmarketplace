@@ -1,5 +1,6 @@
 import { BookOpen, ArrowRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const articles = [
   {
@@ -23,37 +24,35 @@ const articles = [
 ];
 
 const KnowledgeSection = () => {
-  const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="section-padding bg-background" ref={ref}>
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-2">Learn</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Construction Knowledge Hub</h2>
-          <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
+    <section className="section-padding bg-background relative overflow-hidden" ref={ref}>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]" />
+      
+      <div className="max-w-6xl mx-auto relative">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-14"
+        >
+          <p className="text-sm font-semibold text-accent uppercase tracking-[0.2em] mb-3">Learn</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">Construction Knowledge Hub</h2>
+          <p className="mt-4 text-muted-foreground max-w-xl mx-auto text-lg">
             Practical guides and tips to help you make informed decisions about your home construction.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {articles.map((article, i) => (
-            <div
+            <motion.div
               key={article.title}
-              className={`group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-accent/30 transition-all duration-300 cursor-pointer ${
-                visible ? "animate-scroll-reveal" : "opacity-0"
-              }`}
-              style={{ animationDelay: `${i * 0.15}s` }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className="group p-6 rounded-2xl glass-panel hover:shadow-xl hover:shadow-accent/5 hover:border-accent/30 transition-all duration-500 cursor-pointer hover:-translate-y-1"
             >
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="w-4 h-4 text-accent" />
@@ -67,7 +66,7 @@ const KnowledgeSection = () => {
               <span className="text-sm font-medium text-accent inline-flex items-center gap-1 group-hover:gap-2 transition-all">
                 Read More <ArrowRight className="w-3 h-3" />
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
