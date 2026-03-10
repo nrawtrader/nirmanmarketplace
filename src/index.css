@@ -107,9 +107,12 @@
 }
 
 @layer components {
-  /* Glassmorphism panel */
   .glass-panel {
     @apply bg-card/60 backdrop-blur-xl border border-border/50;
+  }
+
+  .glass-panel-dark {
+    @apply bg-foreground/5 backdrop-blur-xl border border-foreground/10;
   }
 }
 
@@ -131,54 +134,31 @@
   }
 }
 
-/* Construction-themed animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes slide-truck {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(120vw); }
-}
-
-@keyframes crane-swing {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
-}
-
-@keyframes stack-up {
-  0% { transform: translateY(30px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes scroll-reveal {
-  0% { opacity: 0; transform: translateY(40px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-truck {
-  animation: slide-truck 12s linear infinite;
-}
-
-.animate-crane {
-  animation: crane-swing 4s ease-in-out infinite;
-  transform-origin: top center;
-}
-
-.animate-stack {
-  animation: stack-up 0.6s ease-out forwards;
-}
-
-.animate-scroll-reveal {
-  animation: scroll-reveal 0.8s ease-out forwards;
-}
-
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--accent) / 0.3);
+  color: hsl(var(--foreground));
 }
