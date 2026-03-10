@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView, useMotionValueEvent } from "framer-motion";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, ArrowRight } from "lucide-react";
@@ -218,6 +218,18 @@ const FinishScene = ({ progress }: { progress: number }) => (
 
 const sceneComponents = [FoundationScene, StructureScene, WallsScene, FinishScene];
 
+/* ---------- Progress Scene ---------- */
+
+const ProgressScene = ({ scrollProgress, index }: { scrollProgress: any; index: number }) => {
+  const [progress, setProgress] = useState(0);
+  const mapped = useTransform(scrollProgress, [0.15, 0.85], [0, 1]);
+
+  useMotionValueEvent(mapped, "change", (v: number) => setProgress(v));
+
+  const SceneComponent = sceneComponents[index];
+  return <SceneComponent progress={progress} />;
+};
+
 /* ---------- Sticky Stage ---------- */
 
 const StickyStage = ({ stage, index }: { stage: StoryStage; index: number }) => {
@@ -227,7 +239,6 @@ const StickyStage = ({ stage, index }: { stage: StoryStage; index: number }) => 
     offset: ["start end", "end start"],
   });
 
-  const progress = useTransform(scrollYProgress, [0.15, 0.85], [0, 1]);
   const opacity = useTransform(scrollYProgress, [0.05, 0.2, 0.8, 0.95], [0, 1, 1, 0]);
   const scaleScene = useTransform(scrollYProgress, [0.05, 0.25], [0.9, 1]);
   const textX = useTransform(
@@ -235,8 +246,6 @@ const StickyStage = ({ stage, index }: { stage: StoryStage; index: number }) => 
     [0.1, 0.3],
     [index % 2 === 0 ? 60 : -60, 0]
   );
-
-  const SceneComponent = sceneComponents[index];
 
   return (
     <div ref={ref} className="min-h-[120vh] relative">
@@ -249,9 +258,8 @@ const StickyStage = ({ stage, index }: { stage: StoryStage; index: number }) => 
             {/* Scene */}
             <motion.div style={{ scale: scaleScene }} className="flex-1 w-full max-w-xl">
               <div className="glass-panel rounded-3xl p-6 lg:p-10 aspect-[4/3] flex items-center justify-center relative overflow-hidden">
-                {/* Glow effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br from-${stage.color}/5 to-transparent rounded-3xl`} />
-                <ProgressDrivenScene scrollProgress={scrollYProgress} index={index} />
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent rounded-3xl" />
+                <ProgressScene scrollProgress={scrollYProgress} index={index} />
               </div>
             </motion.div>
 
@@ -289,38 +297,6 @@ const StickyStage = ({ stage, index }: { stage: StoryStage; index: number }) => 
     </div>
   );
 };
-
-/* Progress-driven scene wrapper */
-const ProgressDrivenScene = ({ scrollProgress, index }: { scrollProgress: any; index: number }) => {
-  const progress = useTransform(scrollProgress, [0.15, 0.85], [0, 1]);
-  const SceneComponent = sceneComponents[index];
-
-  // We need to use a state to make the SVG re-render
-  const ref = useRef<HTMLDivElement>(null);
-  const [p, setP] = useState(0);
-
-  const [, useState2] = useState(0);
-  
-  // Use useMotionValueEvent to track progress
-  const { useMotionValueEvent: _unused } = require("framer-motion");
-
-  return <ProgressScene scrollProgress={scrollProgress} index={index} />;
-};
-
-// Simpler approach: use useInView-based animation with framer-motion
-import { useState as useState2 } from "react";
-
-const ProgressScene = ({ scrollProgress, index }: { scrollProgress: any; index: number }) => {
-  const [progress, setProgress] = useState2(0);
-  const mapped = useTransform(scrollProgress, [0.15, 0.85], [0, 1]);
-
-  useMotionValueEvent(mapped, "change", (v: number) => setProgress(v));
-
-  const SceneComponent = sceneComponents[index];
-  return <SceneComponent progress={progress} />;
-};
-
-import { useMotionValueEvent } from "framer-motion";
 
 /* ---------- Main Section ---------- */
 
