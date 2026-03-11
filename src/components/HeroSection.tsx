@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Calculator, ShoppingBag, ChevronDown, ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { useRef, useState } from "react";
-import cementTruckImg from "@/assets/cement-mixer-truck.jpg";
+import cementTruckImg from "@/assets/cement-truck.png";
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -13,180 +13,149 @@ const HeroSection = () => {
     offset: ["start start", "end start"],
   });
 
-  // Parallax transforms
-  const truckX = useTransform(scrollYProgress, [0, 0.3], ["-100%", "0%"]);
-  const truckScale = useTransform(scrollYProgress, [0.3, 0.6], [1, 1.1]);
-  const drumRotate = useTransform(scrollYProgress, [0, 1], [0, 720]);
-  const textY = useTransform(scrollYProgress, [0, 0.4], [0, -100]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.6, 0.95], [0, 1]);
-  const badgeScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.85]);
-  const statsOpacity = useTransform(scrollYProgress, [0.15, 0.35], [1, 0]);
-  const truckImageOpacity = useTransform(scrollYProgress, [0, 0.15, 0.5], [0, 1, 1]);
-  const contentRevealY = useTransform(scrollYProgress, [0.35, 0.6], [60, 0]);
-  const contentRevealOpacity = useTransform(scrollYProgress, [0.35, 0.55], [0, 1]);
+  const truckX = useTransform(scrollYProgress, [0, 0.25], ["120%", "0%"]);
+  const truckOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
+  const drumRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const textY = useTransform(scrollYProgress, [0.3, 0.6], [0, -120]);
+  const textOpacity = useTransform(scrollYProgress, [0.4, 0.6], [1, 0]);
+  const overlayOpacity = useTransform(scrollYProgress, [0.7, 0.95], [0, 1]);
+  const statsY = useTransform(scrollYProgress, [0.3, 0.5], [0, 60]);
+  const statsOpacity = useTransform(scrollYProgress, [0.35, 0.5], [1, 0]);
+
+  // Mid-scroll trust reveal
+  const trustY = useTransform(scrollYProgress, [0.45, 0.65], [80, 0]);
+  const trustOpacity = useTransform(scrollYProgress, [0.45, 0.6], [0, 1]);
+  const trustFadeOut = useTransform(scrollYProgress, [0.7, 0.85], [1, 0]);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => setScrolled(v > 0.03));
 
   return (
-    <section ref={sectionRef} className="relative h-[300vh]">
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden bg-primary">
-        {/* Animated gradient background */}
+    <section ref={sectionRef} className="relative h-[280vh]">
+      <div className="sticky top-0 h-screen flex items-center overflow-hidden bg-primary">
+        {/* Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-foreground/90" />
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }} />
-          {/* Radial glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
           <motion.div
-            animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.25, 0.15] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px]"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[30%] right-[20%] w-[500px] h-[500px] rounded-full bg-accent/15 blur-[150px]"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.1, 1], opacity: [0.08, 0.15, 0.08] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+            className="absolute bottom-[10%] left-[10%] w-[400px] h-[400px] rounded-full bg-accent/10 blur-[120px]"
           />
         </div>
 
-        {/* Road/ground line */}
-        <div className="absolute bottom-[18%] left-0 right-0 h-[2px] bg-primary-foreground/10" />
-        <div className="absolute bottom-[12%] left-0 right-0 h-px bg-primary-foreground/5" />
+        {/* Ground line */}
+        <div className="absolute bottom-[12%] left-0 right-0 h-[1px] bg-primary-foreground/10" />
 
-        {/* Cement mixer truck — slides in from left */}
-        <motion.div
-          style={{ x: truckX, scale: truckScale, opacity: truckImageOpacity }}
-          className="absolute bottom-[14%] left-[5%] sm:left-[8%] w-[280px] sm:w-[380px] lg:w-[480px] z-10"
-        >
-          <div className="relative">
-            <img
-              src={cementTruckImg}
-              alt="Nirman MarketPlace Cement Mixer Truck"
-              className="w-full h-auto drop-shadow-2xl"
-            />
-            {/* Rotating drum overlay (SVG circle to simulate rotation) */}
-            <motion.div
-              style={{ rotate: drumRotate }}
-              className="absolute top-[18%] left-[28%] w-[42%] h-[55%] rounded-full border-2 border-dashed border-accent/30 pointer-events-none"
-            />
-          </div>
-        </motion.div>
-
-        {/* Dust particles behind truck */}
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              x: [0, 30 + i * 10, 60 + i * 15],
-              y: [0, -5 - i * 3, -10],
-              opacity: [0, 0.3, 0],
-            }}
-            transition={{ duration: 2 + i * 0.3, repeat: Infinity, delay: i * 0.4 }}
-            className="absolute bottom-[18%] left-[3%] w-1.5 h-1.5 rounded-full bg-primary-foreground/20"
-            style={{ left: `${2 + i * 2}%` }}
-          />
-        ))}
-
-        {/* Scroll-fade to next section */}
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 bg-background z-20"
-        />
-
-        {/* Hero content — top right area */}
+        {/* Hero content - centered text */}
         <motion.div
           style={{ y: textY, opacity: textOpacity }}
-          className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 w-full"
+          className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
         >
-          <div className="flex flex-col items-end text-right max-w-2xl ml-auto">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              style={{ scale: badgeScale }}
-            >
-              <span className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-xl border border-primary-foreground/20 px-5 py-2.5 rounded-full text-sm font-medium text-primary-foreground/90">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            {/* Left: Text */}
+            <div className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+              >
+                <span className="inline-flex items-center gap-2 bg-primary-foreground/8 backdrop-blur-xl border border-primary-foreground/15 px-4 py-2 rounded-full text-sm font-medium text-primary-foreground/80">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                  </span>
+                  Trusted by 10,000+ Homeowners Since 2009
                 </span>
-                16 Years of Trust — 10,000+ Homeowners Served
-              </span>
-            </motion.div>
+              </motion.div>
 
-            {/* Main headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mt-6 text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-primary-foreground leading-[0.95] mb-5"
-            >
-              <span className="block overflow-hidden">
-                <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.7, delay: 0.6 }} className="block">
-                  Build Your
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden">
-                <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.7, delay: 0.75 }} className="block">
-                  Dream Home
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden">
-                <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.7, delay: 0.9 }} className="block text-accent">
-                  With Quality Materials
-                </motion.span>
-              </span>
-            </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-primary-foreground leading-[1.05]"
+              >
+                <span className="block">Premium</span>
+                <span className="block text-accent">Cement & Steel</span>
+                <span className="block">Delivered to Site</span>
+              </motion.h1>
 
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.1 }}
-              className="text-base sm:text-lg text-primary-foreground/60 max-w-lg mb-8 leading-relaxed"
-            >
-              From the mixer to your doorstep — premium cement, steel, and sanitary materials delivered with 16 years of trust.
-            </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.8 }}
+                className="text-base sm:text-lg text-primary-foreground/55 max-w-md leading-relaxed"
+              >
+                Factory-fresh, quality-verified construction materials — cement bags and TMT steel bars from authorized manufacturers, delivered within 24 hours.
+              </motion.p>
 
-            {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 1 }}
+                className="flex flex-wrap gap-3 pt-2"
+              >
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 h-13 shadow-lg shadow-accent/25 hover:shadow-accent/40 transition-all duration-300 hover:scale-105 group"
+                >
+                  <Link to="/calculator">
+                    <Calculator className="w-5 h-5 mr-2" />
+                    Calculate Materials
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="text-base px-8 h-13 bg-primary-foreground/5 backdrop-blur-xl border-primary-foreground/15 text-primary-foreground hover:bg-primary-foreground/10 hover:scale-105 transition-all duration-300"
+                >
+                  <Link to="/products">
+                    <ShoppingBag className="w-5 h-5 mr-2" />
+                    Explore Products
+                  </Link>
+                </Button>
+              </motion.div>
+            </div>
+
+            {/* Right: Truck */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.3 }}
-              className="flex flex-col sm:flex-row items-end sm:items-center gap-3"
+              style={{ x: truckX, opacity: truckOpacity }}
+              className="relative flex items-end justify-center lg:justify-end"
             >
-              <Button
-                asChild
-                size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 h-13 shadow-lg shadow-accent/30 hover:shadow-accent/50 transition-all duration-300 hover:scale-105 group"
-              >
-                <Link to="/calculator">
-                  <Calculator className="w-5 h-5 mr-2" />
-                  Calculate Materials
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="text-base px-8 h-13 bg-primary-foreground/5 backdrop-blur-xl border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 hover:scale-105 transition-all duration-300"
-              >
-                <Link to="/products">
-                  <ShoppingBag className="w-5 h-5 mr-2" />
-                  Explore Products
-                </Link>
-              </Button>
+              <div className="relative w-[300px] sm:w-[400px] lg:w-[500px]">
+                <img
+                  src={cementTruckImg}
+                  alt="Cement mixer truck delivering quality materials"
+                  className="w-full h-auto drop-shadow-2xl"
+                />
+                {/* Rotating drum indicator */}
+                <motion.div
+                  style={{ rotate: drumRotate }}
+                  className="absolute top-[22%] left-[20%] w-[45%] aspect-square rounded-full border-2 border-dashed border-accent/20 pointer-events-none"
+                />
+                {/* Glow behind truck */}
+                <div className="absolute inset-0 -z-10 bg-accent/10 blur-[60px] rounded-full scale-75" />
+              </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Stats bar — bottom */}
+        {/* Stats bar */}
         <motion.div
-          style={{ opacity: statsOpacity }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 w-full max-w-3xl px-4"
+          style={{ y: statsY, opacity: statsOpacity }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-full max-w-4xl px-4"
         >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.6 }}
+            transition={{ duration: 0.7, delay: 1.3 }}
             className="grid grid-cols-4 gap-3"
           >
             {[
@@ -199,43 +168,49 @@ const HeroSection = () => {
                 key={stat.label}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 1.8 + i * 0.08 }}
-                className="bg-primary-foreground/5 backdrop-blur-xl border border-primary-foreground/10 rounded-xl p-3 sm:p-4 text-center"
+                transition={{ duration: 0.4, delay: 1.5 + i * 0.08 }}
+                className="glass-panel-dark rounded-xl p-3 sm:p-4 text-center"
               >
                 <div className="text-xl sm:text-2xl font-bold text-primary-foreground">{stat.value}</div>
-                <div className="text-[10px] sm:text-xs text-primary-foreground/50 mt-0.5">{stat.label}</div>
+                <div className="text-[10px] sm:text-xs text-primary-foreground/45 mt-0.5">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
 
-        {/* Mid-scroll content reveal — trust messaging */}
+        {/* Mid-scroll trust message */}
         <motion.div
-          style={{ y: contentRevealY, opacity: contentRevealOpacity }}
+          style={{ y: trustY, opacity: trustOpacity }}
           className="absolute inset-0 z-15 flex items-center justify-center pointer-events-none"
         >
-          <div className="text-center max-w-3xl px-6">
-            <p className="text-sm font-semibold text-accent uppercase tracking-[0.25em] mb-3">Why Trust Nirman MarketPlace</p>
+          <motion.div style={{ opacity: trustFadeOut }} className="text-center max-w-3xl px-6">
+            <p className="text-sm font-semibold text-accent uppercase tracking-[0.25em] mb-3">16 Years of Excellence</p>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-4">
               Quality You Can
               <span className="text-accent"> Build Upon</span>
             </h2>
             <p className="text-primary-foreground/50 text-base sm:text-lg max-w-xl mx-auto">
-              In a market flooded with substandard materials, we've spent 16 years building relationships with verified manufacturers to deliver only the best to your construction site.
+              In a market flooded with adulterated cement and substandard steel, we source only from verified, authorized manufacturers.
             </p>
-          </div>
+          </motion.div>
         </motion.div>
+
+        {/* Overlay fade to next section */}
+        <motion.div
+          style={{ opacity: overlayOpacity }}
+          className="absolute inset-0 bg-background z-30 pointer-events-none"
+        />
 
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: scrolled ? 0 : 1 }}
           transition={{ duration: 0.3 }}
-          className="absolute bottom-28 sm:bottom-24 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2"
+          className="absolute bottom-28 sm:bottom-24 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
         >
-          <span className="text-xs text-primary-foreground/40 uppercase tracking-[0.2em]">Scroll</span>
+          <span className="text-xs text-primary-foreground/35 uppercase tracking-[0.2em]">Scroll to explore</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-            <ChevronDown className="w-5 h-5 text-primary-foreground/40" />
+            <ChevronDown className="w-5 h-5 text-primary-foreground/35" />
           </motion.div>
         </motion.div>
       </div>
