@@ -24,7 +24,7 @@ import {
   formatINR,
 } from "@/data/constructionCost";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from "recharts";
-import { Calculator as CalcIcon, ArrowRight, RotateCcw, Clock, IndianRupee, TrendingUp, Building2 } from "lucide-react";
+import { Calculator as CalcIcon, ArrowRight, RotateCcw, IndianRupee, TrendingUp, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Calculator = () => {
