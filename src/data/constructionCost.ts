@@ -204,11 +204,9 @@ export function calculateFullEstimate(
   const phases: PhaseResult[] = PHASES.map((p, i) => {
     const mult = p.gradeMultiplier[overallGrade];
     const cost = Math.round(p.costPerSqft * totalArea * mult * regionMultiplier);
-    const days = Math.ceil(p.daysPerSqft * (totalArea / 1000));
     return {
       id: p.id,
       name: p.name,
-      days,
       cost,
       color: PHASE_COLORS[i % PHASE_COLORS.length],
     };
@@ -216,15 +214,13 @@ export function calculateFullEstimate(
 
   const totalResourceCost = resources.reduce((s, r) => s + r.amount, 0);
   const totalPhaseCost = phases.reduce((s, p) => s + p.cost, 0);
-  const totalCost = Math.round((totalResourceCost + totalPhaseCost) / 2); // averaged
-  const totalDays = phases.reduce((s, p) => s + p.days, 0);
+  const totalCost = Math.round((totalResourceCost + totalPhaseCost) / 2);
 
   return {
     resources,
     phases,
     totalCost,
     costPerSqft: Math.round(totalCost / totalArea),
-    totalDays,
     area: input.area,
     floors: input.floors,
   };
