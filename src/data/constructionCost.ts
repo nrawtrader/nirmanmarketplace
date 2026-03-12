@@ -101,102 +101,6 @@ export const RESOURCES: ResourceItem[] = [
     },
   },
   {
-    id: "bricks",
-    name: "Bricks",
-    icon: "🧱",
-    unit: "Per Piece",
-    quantityPerSqft: 19,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 6 },
-      medium: { label: "Medium Grade", ratePerUnit: 8 },
-      premium: { label: "Premium Grade", ratePerUnit: 11 },
-    },
-  },
-  {
-    id: "aggregate",
-    name: "Aggregate",
-    icon: "🪨",
-    unit: "Per Cubic feet",
-    quantityPerSqft: 1.9,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 25 },
-      medium: { label: "Medium Grade", ratePerUnit: 31 },
-      premium: { label: "Premium Grade", ratePerUnit: 40 },
-    },
-  },
-  {
-    id: "sand",
-    name: "Sand",
-    icon: "⛱️",
-    unit: "Per Cubic feet",
-    quantityPerSqft: 2.0,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 32 },
-      medium: { label: "Medium Grade", ratePerUnit: 39 },
-      premium: { label: "Premium Grade", ratePerUnit: 48 },
-    },
-  },
-  {
-    id: "flooring",
-    name: "Flooring",
-    icon: "🏠",
-    unit: "Per Sq feet",
-    quantityPerSqft: 1.0,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 55 },
-      medium: { label: "Medium Grade", ratePerUnit: 89 },
-      premium: { label: "Premium Grade", ratePerUnit: 145 },
-    },
-  },
-  {
-    id: "windows",
-    name: "Windows",
-    icon: "🪟",
-    unit: "Per Sq feet",
-    quantityPerSqft: 0.17,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 320 },
-      medium: { label: "Medium Grade", ratePerUnit: 442 },
-      premium: { label: "Premium Grade", ratePerUnit: 620 },
-    },
-  },
-  {
-    id: "doors",
-    name: "Doors",
-    icon: "🚪",
-    unit: "Per Sq feet",
-    quantityPerSqft: 0.18,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 450 },
-      medium: { label: "Medium Grade", ratePerUnit: 636 },
-      premium: { label: "Premium Grade", ratePerUnit: 900 },
-    },
-  },
-  {
-    id: "electrical",
-    name: "Electrical Fittings",
-    icon: "🔌",
-    unit: "Per Sq feet",
-    quantityPerSqft: 1.0,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 55 },
-      medium: { label: "Medium Grade", ratePerUnit: 87 },
-      premium: { label: "Premium Grade", ratePerUnit: 140 },
-    },
-  },
-  {
-    id: "painting",
-    name: "Painting",
-    icon: "🎨",
-    unit: "Per Sq feet",
-    quantityPerSqft: 3.0,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 28 },
-      medium: { label: "Medium Grade", ratePerUnit: 48 },
-      premium: { label: "Premium Grade", ratePerUnit: 72 },
-    },
-  },
-  {
     id: "sanitary",
     name: "Sanitary Fittings",
     icon: "🚿",
@@ -206,30 +110,6 @@ export const RESOURCES: ResourceItem[] = [
       basic: { label: "Basic Grade", ratePerUnit: 40 },
       medium: { label: "Medium Grade", ratePerUnit: 62 },
       premium: { label: "Premium Grade", ratePerUnit: 100 },
-    },
-  },
-  {
-    id: "kitchen",
-    name: "Kitchen Work",
-    icon: "🍳",
-    unit: "Per Sq feet",
-    quantityPerSqft: 0.055,
-    grades: {
-      basic: { label: "Platform and Sink", ratePerUnit: 650 },
-      medium: { label: "Semi Modular", ratePerUnit: 921 },
-      premium: { label: "Fully Modular", ratePerUnit: 1500 },
-    },
-  },
-  {
-    id: "contractor",
-    name: "Contractor (RCC, Brickwork, Plaster)",
-    icon: "👷",
-    unit: "Per Sq feet",
-    quantityPerSqft: 1.0,
-    grades: {
-      basic: { label: "Basic Grade", ratePerUnit: 150 },
-      medium: { label: "Medium Grade", ratePerUnit: 210 },
-      premium: { label: "Premium Grade", ratePerUnit: 310 },
     },
   },
 ];
@@ -268,7 +148,6 @@ export interface ResourceResult {
 export interface PhaseResult {
   id: string;
   name: string;
-  days: number;
   cost: number;
   color: string;
 }
@@ -278,7 +157,6 @@ export interface FullEstimate {
   phases: PhaseResult[];
   totalCost: number;
   costPerSqft: number;
-  totalDays: number;
   area: number;
   floors: number;
 }
@@ -326,11 +204,9 @@ export function calculateFullEstimate(
   const phases: PhaseResult[] = PHASES.map((p, i) => {
     const mult = p.gradeMultiplier[overallGrade];
     const cost = Math.round(p.costPerSqft * totalArea * mult * regionMultiplier);
-    const days = Math.ceil(p.daysPerSqft * (totalArea / 1000));
     return {
       id: p.id,
       name: p.name,
-      days,
       cost,
       color: PHASE_COLORS[i % PHASE_COLORS.length],
     };
@@ -338,15 +214,13 @@ export function calculateFullEstimate(
 
   const totalResourceCost = resources.reduce((s, r) => s + r.amount, 0);
   const totalPhaseCost = phases.reduce((s, p) => s + p.cost, 0);
-  const totalCost = Math.round((totalResourceCost + totalPhaseCost) / 2); // averaged
-  const totalDays = phases.reduce((s, p) => s + p.days, 0);
+  const totalCost = Math.round((totalResourceCost + totalPhaseCost) / 2);
 
   return {
     resources,
     phases,
     totalCost,
     costPerSqft: Math.round(totalCost / totalArea),
-    totalDays,
     area: input.area,
     floors: input.floors,
   };

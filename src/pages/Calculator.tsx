@@ -23,8 +23,8 @@ import {
   FullEstimate,
   formatINR,
 } from "@/data/constructionCost";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from "recharts";
-import { Calculator as CalcIcon, ArrowRight, RotateCcw, Clock, IndianRupee, TrendingUp, Building2 } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { Calculator as CalcIcon, ArrowRight, RotateCcw, IndianRupee, TrendingUp, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Calculator = () => {
@@ -83,7 +83,7 @@ const Calculator = () => {
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 font-display"
           >
-            Total Cost and Phase-wise Breakdown
+            Cement, Steel & Sanitary Cost Estimator
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -91,7 +91,7 @@ const Calculator = () => {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground max-w-2xl mx-auto text-lg"
           >
-            of the Home Building Project
+            Get accurate material estimates for your construction project
           </motion.p>
         </div>
 
@@ -183,7 +183,7 @@ const Calculator = () => {
             >
               {/* Summary Bar */}
               <div className="bg-primary text-primary-foreground py-4 mb-10">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-wrap justify-between items-center gap-4">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-wrap justify-between items-center gap-4">
                   <div className="flex items-center gap-3">
                     <IndianRupee className="w-5 h-5" />
                     <div>
@@ -199,13 +199,6 @@ const Calculator = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5" />
-                    <div>
-                      <p className="text-xs text-primary-foreground/70">Overall Duration</p>
-                      <p className="text-xl font-bold">{result.totalDays} Days</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
                     <Building2 className="w-5 h-5" />
                     <div>
                       <p className="text-xs text-primary-foreground/70">Total Built-up Area</p>
@@ -216,31 +209,30 @@ const Calculator = () => {
               </div>
 
               <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-                {/* Donut Chart + Timeline */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Donut Chart */}
+                {/* Donut Chart */}
+                <div className="max-w-xl mx-auto">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-xl font-bold text-center">Total Estimated Cost (INR)</CardTitle>
+                      <CardTitle className="text-xl font-bold text-center">Cost Distribution</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="h-[350px]">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie
-                              data={result.phases}
+                              data={result.resources}
                               cx="50%"
                               cy="50%"
                               innerRadius={70}
                               outerRadius={130}
-                              dataKey="cost"
+                              dataKey="amount"
                               nameKey="name"
                               paddingAngle={2}
-                              label={({ name }) => name.length > 15 ? name.slice(0, 15) + "…" : name}
+                              label={({ name }) => name}
                               labelLine
                             >
-                              {result.phases.map((phase, i) => (
-                                <Cell key={phase.id} fill={phase.color} />
+                              {result.resources.map((r, i) => (
+                                <Cell key={r.id} fill={["hsl(48, 96%, 53%)", "hsl(225, 73%, 50%)", "hsl(142, 71%, 35%)"][i]} />
                               ))}
                             </Pie>
                             <Tooltip
@@ -253,57 +245,6 @@ const Calculator = () => {
                               }}
                             />
                           </PieChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Timeline */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-xl font-bold text-center">
-                        Timeline Tracking: Cost Per Phase
-                        <span className="block text-sm font-normal text-muted-foreground mt-1">
-                          Overall duration in days: {result.totalDays} Days
-                        </span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-[350px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
-                            data={result.phases}
-                            layout="vertical"
-                            margin={{ left: 10, right: 80, top: 5, bottom: 5 }}
-                          >
-                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
-                            <XAxis type="number" hide />
-                            <YAxis
-                              type="category"
-                              dataKey="name"
-                              width={120}
-                              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                            />
-                            <Tooltip
-                              formatter={(value: number) => formatINR(value)}
-                              contentStyle={{
-                                backgroundColor: "hsl(var(--card))",
-                                border: "1px solid hsl(var(--border))",
-                                borderRadius: "8px",
-                                color: "hsl(var(--foreground))",
-                              }}
-                            />
-                            <Bar dataKey="cost" radius={[0, 4, 4, 0]}>
-                              {result.phases.map((phase) => (
-                                <Cell key={phase.id} fill={phase.color} />
-                              ))}
-                              <LabelList
-                                dataKey={(entry: { days: number; cost: number }) => `${entry.days}D | ${formatINR(entry.cost)}`}
-                                position="right"
-                                style={{ fontSize: 10, fill: "hsl(var(--foreground))" }}
-                              />
-                            </Bar>
-                          </BarChart>
                         </ResponsiveContainer>
                       </div>
                     </CardContent>
