@@ -183,7 +183,7 @@ const Calculator = () => {
             >
               {/* Summary Bar */}
               <div className="bg-primary text-primary-foreground py-4 mb-10">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-wrap justify-between items-center gap-4">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-wrap justify-between items-center gap-4">
                   <div className="flex items-center gap-3">
                     <IndianRupee className="w-5 h-5" />
                     <div>
@@ -196,13 +196,6 @@ const Calculator = () => {
                     <div>
                       <p className="text-xs text-primary-foreground/70">Total Estimated Cost</p>
                       <p className="text-xl font-bold">{formatINR(result.totalCost)}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5" />
-                    <div>
-                      <p className="text-xs text-primary-foreground/70">Overall Duration</p>
-                      <p className="text-xl font-bold">{result.totalDays} Days</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
