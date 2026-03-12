@@ -83,7 +83,7 @@ const Calculator = () => {
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 font-display"
           >
-            Total Cost and Phase-wise Breakdown
+            Cement, Steel & Sanitary Cost Estimator
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -91,7 +91,7 @@ const Calculator = () => {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground max-w-2xl mx-auto text-lg"
           >
-            of the Home Building Project
+            Get accurate material estimates for your construction project
           </motion.p>
         </div>
 
