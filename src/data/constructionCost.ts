@@ -157,7 +157,6 @@ export interface FullEstimate {
   phases: PhaseResult[];
   totalCost: number;
   costPerSqft: number;
-  totalDays: number;
   area: number;
   floors: number;
 }
