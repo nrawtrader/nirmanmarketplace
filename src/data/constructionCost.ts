@@ -148,7 +148,6 @@ export interface ResourceResult {
 export interface PhaseResult {
   id: string;
   name: string;
-  days: number;
   cost: number;
   color: string;
 }
