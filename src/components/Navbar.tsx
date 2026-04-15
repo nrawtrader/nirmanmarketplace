@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, HardHat } from "lucide-react";
+import { Menu, X, HardHat, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/contexts/CartContext";
 import EstimateForm from "./EstimateForm";
 
 const navLinks = [
@@ -15,6 +16,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { totalItems, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -38,14 +40,11 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors duration-300 ${
               showSolid ? "bg-primary" : "bg-primary-foreground/10 backdrop-blur-sm"
             }`}>
-              <HardHat className={`w-5 h-5 transition-colors duration-300 ${
-                showSolid ? "text-primary-foreground" : "text-primary-foreground"
-              }`} />
+              <HardHat className={`w-5 h-5 text-primary-foreground`} />
             </div>
             <span className={`text-lg font-bold tracking-tight transition-colors duration-300 ${
               showSolid ? "text-foreground" : "text-primary-foreground"
@@ -54,7 +53,6 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
@@ -75,15 +73,28 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Cart Button */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className={`relative p-2 rounded-lg transition-all duration-300 ${
+                showSolid
+                  ? "hover:bg-secondary text-foreground"
+                  : "hover:bg-primary-foreground/10 text-primary-foreground"
+              }`}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center animate-in zoom-in">
+                  {totalItems}
+                </span>
+              )}
+            </button>
             <Button
               variant="outline"
               size="sm"
               className={`transition-all duration-300 ${
-                showSolid
-                  ? ""
-                  : "border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
+                showSolid ? "" : "border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
               }`}
             >
               Sign In
@@ -91,23 +102,35 @@ const Navbar = () => {
             <EstimateForm />
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className={`md:hidden p-2 rounded-lg transition-colors ${
-              showSolid ? "hover:bg-secondary" : "hover:bg-primary-foreground/10"
-            }`}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? (
-              <X className={`w-5 h-5 ${showSolid ? "text-foreground" : "text-primary-foreground"}`} />
-            ) : (
-              <Menu className={`w-5 h-5 ${showSolid ? "text-foreground" : "text-primary-foreground"}`} />
-            )}
-          </button>
+          {/* Mobile */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className={`relative p-2 rounded-lg transition-colors ${
+                showSolid ? "hover:bg-secondary" : "hover:bg-primary-foreground/10"
+              }`}
+            >
+              <ShoppingCart className={`w-5 h-5 ${showSolid ? "text-foreground" : "text-primary-foreground"}`} />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+            <button
+              className={`p-2 rounded-lg transition-colors ${showSolid ? "hover:bg-secondary" : "hover:bg-primary-foreground/10"}`}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? (
+                <X className={`w-5 h-5 ${showSolid ? "text-foreground" : "text-primary-foreground"}`} />
+              ) : (
+                <Menu className={`w-5 h-5 ${showSolid ? "text-foreground" : "text-primary-foreground"}`} />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -119,14 +142,9 @@ const Navbar = () => {
           >
             <div className="px-4 py-4 space-y-2">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setOpen(false)}
+                <Link key={link.path} to={link.path} onClick={() => setOpen(false)}
                   className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                    location.pathname === link.path
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-secondary"
+                    location.pathname === link.path ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary"
                   }`}
                 >
                   {link.label}
