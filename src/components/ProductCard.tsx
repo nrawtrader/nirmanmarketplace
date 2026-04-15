@@ -10,18 +10,26 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [quantity, setQuantity] = useState(1);
+  const hasRealImage = product.image && product.image !== "/placeholder.svg";
 
   return (
     <div className="group rounded-2xl glass-panel overflow-hidden hover:shadow-xl hover:shadow-accent/5 hover:border-accent/30 transition-all duration-500 hover:-translate-y-1">
-      {/* Image placeholder */}
-      <div className="relative h-48 bg-secondary/60 flex items-center justify-center overflow-hidden">
-        <Package className="w-16 h-16 text-muted-foreground/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" />
+      {/* Image */}
+      <div className="relative h-52 bg-secondary/30 flex items-center justify-center overflow-hidden p-4">
+        {hasRealImage ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <Package className="w-16 h-16 text-muted-foreground/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" />
+        )}
         <div className="absolute top-3 left-3">
           <span className="text-xs font-medium bg-primary text-primary-foreground px-2.5 py-1 rounded-full capitalize">
             {product.category}
           </span>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-card/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
       <div className="p-5">
