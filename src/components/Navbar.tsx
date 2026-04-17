@@ -39,16 +39,13 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          <Link to="/" className="flex items-center gap-2.5 group">
+        <div className="flex items-center justify-between h-20 lg:h-24">
+          <Link to="/" className="flex items-center group">
             <img
               src={logo}
               alt="Nirman MarketPlace"
-              className="h-9 w-auto"
+              className="h-14 lg:h-16 w-auto"
             />
-            <span className="text-base font-bold tracking-tight hidden sm:inline text-foreground" style={{ fontFamily: "'Space Grotesk'" }}>
-              NIRMAN MARKETPLACE
-            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
