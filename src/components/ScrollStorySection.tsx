@@ -121,9 +121,8 @@ const QualityPromiseSection = () => {
   ];
 
   return (
-    <div ref={ref} className="section-padding bg-primary text-primary-foreground relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[200px]" />
+    <div ref={ref} className="section-padding bg-secondary text-foreground relative overflow-hidden">
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.4]" />
 
       <div className="max-w-6xl mx-auto relative">
         <motion.div
@@ -132,12 +131,12 @@ const QualityPromiseSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <p className="text-sm font-semibold text-accent uppercase tracking-[0.25em] mb-4">The Quality Difference</p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+          <p className="text-sm font-semibold text-foreground/60 uppercase tracking-[0.25em] mb-4">The Quality Difference</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
             In a Market Full of
-            <span className="text-accent"> Compromises</span>
+            <span className="text-foreground/70"> Compromises</span>
           </h2>
-          <p className="text-primary-foreground/60 max-w-2xl mx-auto text-base lg:text-lg">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-base lg:text-lg">
             Low-quality cement and adulterated materials plague the construction industry.
             We've built our reputation on being the antidote.
           </p>
@@ -150,14 +149,14 @@ const QualityPromiseSection = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.12 }}
-              className="group relative p-6 rounded-2xl bg-primary-foreground/5 border border-primary-foreground/10 hover:border-accent/30 transition-all duration-500 hover:-translate-y-2"
+              className="group relative p-6 rounded-2xl bg-background border border-border hover:border-foreground/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-lg"
             >
-              <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center mb-4 group-hover:bg-accent/25 group-hover:scale-110 transition-all duration-300">
-                <fact.icon className="w-6 h-6 text-accent" />
+              <div className="w-12 h-12 rounded-xl bg-foreground/5 flex items-center justify-center mb-4 group-hover:bg-foreground/10 group-hover:scale-110 transition-all duration-300">
+                <fact.icon className="w-6 h-6 text-foreground" />
               </div>
-              <div className="text-3xl font-bold text-accent mb-1">{fact.stat}</div>
-              <h3 className="font-semibold text-base mb-2">{fact.title}</h3>
-              <p className="text-sm text-primary-foreground/50 leading-relaxed">{fact.description}</p>
+              <div className="text-3xl font-bold text-foreground mb-1">{fact.stat}</div>
+              <h3 className="font-semibold text-base mb-2 text-foreground">{fact.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{fact.description}</p>
             </motion.div>
           ))}
         </div>
