@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, HardHat, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/contexts/CartContext";
 import EstimateForm from "./EstimateForm";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -41,15 +42,17 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors duration-300 ${
-              showSolid ? "bg-primary" : "bg-primary-foreground/10 backdrop-blur-sm"
-            }`}>
-              <HardHat className={`w-5 h-5 text-primary-foreground`} />
-            </div>
-            <span className={`text-lg font-bold tracking-tight transition-colors duration-300 ${
+            <img
+              src={logo}
+              alt="Nirman MarketPlace"
+              className={`h-9 w-auto transition-all duration-300 ${
+                showSolid ? "" : "brightness-0 invert"
+              }`}
+            />
+            <span className={`text-base font-bold tracking-tight hidden sm:inline transition-colors duration-300 ${
               showSolid ? "text-foreground" : "text-primary-foreground"
             }`} style={{ fontFamily: "'Space Grotesk'" }}>
-              Nirman MarketPlace
+              NIRMAN MARKETPLACE
             </span>
           </Link>
 

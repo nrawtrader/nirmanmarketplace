@@ -1,6 +1,7 @@
-import { HardHat, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
@@ -31,11 +32,9 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-                <HardHat className="w-5 h-5 text-accent-foreground" />
-              </div>
-              <span className="text-xl font-bold" style={{ fontFamily: "'Space Grotesk'" }}>
-                Nirman MarketPlace
+              <img src={logo} alt="Nirman MarketPlace" className="h-10 w-auto brightness-0 invert" />
+              <span className="text-lg font-bold" style={{ fontFamily: "'Space Grotesk'" }}>
+                NIRMAN
               </span>
             </div>
             <p className="text-primary-foreground/50 text-sm leading-relaxed">
