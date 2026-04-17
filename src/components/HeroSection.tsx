@@ -31,11 +31,11 @@ const HeroSection = () => {
 
   return (
     <section ref={sectionRef} className="relative h-[280vh]">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden bg-primary">
+      <div className="sticky top-0 h-screen flex items-center overflow-hidden bg-background">
         {/* Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80" />
-          <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-secondary" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.4]" />
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
