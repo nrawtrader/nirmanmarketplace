@@ -31,11 +31,11 @@ const HeroSection = () => {
 
   return (
     <section ref={sectionRef} className="relative h-[280vh]">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden bg-primary">
+      <div className="sticky top-0 h-screen flex items-center overflow-hidden bg-background">
         {/* Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80" />
-          <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-secondary" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.4]" />
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -49,7 +49,7 @@ const HeroSection = () => {
         </div>
 
         {/* Ground line */}
-        <div className="absolute bottom-[12%] left-0 right-0 h-[1px] bg-primary-foreground/10" />
+        <div className="absolute bottom-[12%] left-0 right-0 h-[1px] bg-foreground/10" />
 
         {/* Hero content - centered text */}
         <motion.div
@@ -64,7 +64,7 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.7, delay: 0.2 }}
               >
-                <span className="inline-flex items-center gap-2 bg-primary-foreground/8 backdrop-blur-xl border border-primary-foreground/15 px-4 py-2 rounded-full text-sm font-medium text-primary-foreground/80">
+                <span className="inline-flex items-center gap-2 bg-foreground/8 backdrop-blur-xl border border-foreground/15 px-4 py-2 rounded-full text-sm font-medium text-foreground/80">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
@@ -77,7 +77,7 @@ const HeroSection = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-primary-foreground leading-[1.05]"
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.05]"
               >
                 <span className="block">Premium</span>
                 <span className="block text-accent">Cement & Steel</span>
@@ -88,7 +88,7 @@ const HeroSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.8 }}
-                className="text-base sm:text-lg text-primary-foreground/55 max-w-md leading-relaxed"
+                className="text-base sm:text-lg text-foreground/55 max-w-md leading-relaxed"
               >
                 Factory-fresh, quality-verified construction materials — cement bags and TMT steel bars from authorized manufacturers, delivered within 24 hours.
               </motion.p>
@@ -114,7 +114,7 @@ const HeroSection = () => {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="text-base px-8 h-13 bg-primary-foreground/5 backdrop-blur-xl border-primary-foreground/15 text-primary-foreground hover:bg-primary-foreground/10 hover:scale-105 transition-all duration-300"
+                  className="text-base px-8 h-13 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-foreground hover:bg-foreground/10 hover:scale-105 transition-all duration-300"
                 >
                   <Link to="/products">
                     <ShoppingBag className="w-5 h-5 mr-2" />
@@ -169,10 +169,10 @@ const HeroSection = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 1.5 + i * 0.08 }}
-                className="glass-panel-dark rounded-xl p-3 sm:p-4 text-center"
+                className="glass-panel rounded-xl p-3 sm:p-4 text-center"
               >
-                <div className="text-xl sm:text-2xl font-bold text-primary-foreground">{stat.value}</div>
-                <div className="text-[10px] sm:text-xs text-primary-foreground/45 mt-0.5">{stat.label}</div>
+                <div className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</div>
+                <div className="text-[10px] sm:text-xs text-foreground/45 mt-0.5">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -185,11 +185,11 @@ const HeroSection = () => {
         >
           <motion.div style={{ opacity: trustFadeOut }} className="text-center max-w-3xl px-6">
             <p className="text-sm font-semibold text-accent uppercase tracking-[0.25em] mb-3">16 Years of Excellence</p>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-4">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4">
               Quality You Can
               <span className="text-accent"> Build Upon</span>
             </h2>
-            <p className="text-primary-foreground/50 text-base sm:text-lg max-w-xl mx-auto">
+            <p className="text-foreground/50 text-base sm:text-lg max-w-xl mx-auto">
               In a market flooded with adulterated cement and substandard steel, we source only from verified, authorized manufacturers.
             </p>
           </motion.div>
@@ -208,9 +208,9 @@ const HeroSection = () => {
           transition={{ duration: 0.3 }}
           className="absolute bottom-28 sm:bottom-24 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
         >
-          <span className="text-xs text-primary-foreground/35 uppercase tracking-[0.2em]">Scroll to explore</span>
+          <span className="text-xs text-foreground/35 uppercase tracking-[0.2em]">Scroll to explore</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-            <ChevronDown className="w-5 h-5 text-primary-foreground/35" />
+            <ChevronDown className="w-5 h-5 text-foreground/35" />
           </motion.div>
         </motion.div>
       </div>
