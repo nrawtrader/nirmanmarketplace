@@ -7,8 +7,8 @@ const TrustSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="section-padding bg-primary text-primary-foreground relative overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+    <section className="section-padding bg-background text-foreground relative overflow-hidden" ref={ref}>
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.3]" />
 
       <div className="max-w-6xl mx-auto relative">
         <motion.div
