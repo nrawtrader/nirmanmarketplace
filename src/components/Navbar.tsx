@@ -25,8 +25,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isHome = location.pathname === "/";
-  const showSolid = scrolled || !isHome;
+  const showSolid = true; // Always solid white navbar for clean UltraTech-inspired look
 
   return (
     <motion.nav
@@ -34,9 +33,9 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        showSolid
-          ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-sm"
-          : "bg-transparent border-b border-transparent"
+        scrolled
+          ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm"
+          : "bg-background border-b border-border"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,13 +44,9 @@ const Navbar = () => {
             <img
               src={logo}
               alt="Nirman MarketPlace"
-              className={`h-9 w-auto transition-all duration-300 ${
-                showSolid ? "" : "brightness-0 invert"
-              }`}
+              className="h-9 w-auto"
             />
-            <span className={`text-base font-bold tracking-tight hidden sm:inline transition-colors duration-300 ${
-              showSolid ? "text-foreground" : "text-primary-foreground"
-            }`} style={{ fontFamily: "'Space Grotesk'" }}>
+            <span className="text-base font-bold tracking-tight hidden sm:inline text-foreground" style={{ fontFamily: "'Space Grotesk'" }}>
               NIRMAN MARKETPLACE
             </span>
           </Link>
