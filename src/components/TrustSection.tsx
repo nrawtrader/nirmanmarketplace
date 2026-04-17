@@ -19,7 +19,7 @@ const TrustSection = () => {
         >
           <p className="text-sm font-semibold text-accent uppercase tracking-[0.2em] mb-3">Trust & Quality</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Why Homeowners Choose Us</h2>
-          <p className="text-primary-foreground/50 max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto">
             16 years of delivering quality materials — no shortcuts, no compromises.
           </p>
         </motion.div>
@@ -36,7 +36,7 @@ const TrustSection = () => {
               <AlertTriangle className="w-6 h-6 text-destructive" />
               <h3 className="font-bold text-lg">The Market Problem</h3>
             </div>
-            <ul className="space-y-3 text-sm text-primary-foreground/70">
+            <ul className="space-y-3 text-sm text-muted-foreground">
               {[
                 "Adulterated cement with low-grade fillers",
                 "Under-weight bags sold at full price",
@@ -61,7 +61,7 @@ const TrustSection = () => {
               <CheckCircle className="w-6 h-6 text-accent" />
               <h3 className="font-bold text-lg">The Nirman Promise</h3>
             </div>
-            <ul className="space-y-3 text-sm text-primary-foreground/70">
+            <ul className="space-y-3 text-sm text-muted-foreground">
               {[
                 "100% genuine, factory-sealed materials",
                 "Full-weight verified bags with batch codes",
@@ -95,7 +95,7 @@ const TrustSection = () => {
                 <item.icon className="w-7 h-7 text-accent" />
               </div>
               <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-              <p className="text-sm text-primary-foreground/70 leading-relaxed">{item.description}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
