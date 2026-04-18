@@ -206,7 +206,7 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: scrolled ? 0 : 1 }}
           transition={{ duration: 0.3 }}
-          className="absolute bottom-28 sm:bottom-24 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+          className="absolute bottom-20 right-6 z-20 hidden md:flex flex-col items-center gap-2"
         >
           <span className="text-xs text-foreground/35 uppercase tracking-[0.2em]">Scroll to explore</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
