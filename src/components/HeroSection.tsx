@@ -150,13 +150,13 @@ const HeroSection = () => {
         {/* Stats bar */}
         <motion.div
           style={{ y: statsY, opacity: statsOpacity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-full max-w-4xl px-4"
+          className="absolute bottom-20 left-0 right-0 z-20 px-4 sm:px-6 lg:px-8 flex justify-center"
         >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.3 }}
-            className="grid grid-cols-4 gap-3"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-3xl mx-auto"
           >
             {[
               { value: "16+", label: "Years Legacy" },
@@ -169,10 +169,10 @@ const HeroSection = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 1.5 + i * 0.08 }}
-                className="glass-panel rounded-xl p-3 sm:p-4 text-center"
+                className="rounded-xl p-4 text-center bg-background/80 backdrop-blur-md border border-border shadow-sm"
               >
-                <div className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</div>
-                <div className="text-[10px] sm:text-xs text-foreground/45 mt-0.5">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>

@@ -171,10 +171,10 @@ const BuildingJourneySection = () => {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   const steps = [
-    { step: "02", title: "Strong Foundations", desc: "Premium cement & TMT steel bars form the backbone of your home.", tags: ["OPC 53 Grade Cement", "PPC Cement", "TMT Steel Fe500D"] },
-    { step: "03", title: "Structural Strength", desc: "Columns and beams rise with precision-engineered reinforcement steel.", tags: ["High-Grade TMT Bars", "Binding Wire", "Structural Steel"] },
-    { step: "04", title: "Walls & Plumbing", desc: "Quality pipes and sanitary fittings bring comfort to every room.", tags: ["Sanitary Pipes", "Plumbing Fittings", "Bathroom Fixtures"] },
-    { step: "05", title: "Finishing Touches", desc: "Roof, windows, and finishing transforms structure into dream home.", tags: ["Roofing Materials", "Windows & Doors", "Finishing Supplies"] },
+    { step: "01", title: "Strong Foundations", desc: "Premium cement & TMT steel bars form the backbone of your home.", tags: ["OPC 53 Grade Cement", "PPC Cement", "TMT Steel Fe500D"] },
+    { step: "02", title: "Structural Strength", desc: "Columns and beams rise with precision-engineered reinforcement steel.", tags: ["High-Grade TMT Bars", "Binding Wire", "Structural Steel"] },
+    { step: "03", title: "Walls & Plumbing", desc: "Quality pipes and sanitary fittings bring comfort to every room.", tags: ["Sanitary Pipes", "Plumbing Fittings", "Bathroom Fixtures"] },
+    { step: "04", title: "Finishing Touches", desc: "Roof, windows, and finishing transforms structure into dream home.", tags: ["Roofing Materials", "Windows & Doors", "Finishing Supplies"] },
   ];
 
   return (
