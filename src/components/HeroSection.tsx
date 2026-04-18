@@ -147,16 +147,16 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        {/* Stats bar */}
+        {/* Stats bar - compact row at bottom */}
         <motion.div
           style={{ y: statsY, opacity: statsOpacity }}
-          className="absolute bottom-20 left-0 right-0 z-20 px-4 sm:px-6 lg:px-8 flex justify-center"
+          className="absolute bottom-6 left-0 right-0 z-20 px-4 sm:px-6 lg:px-8"
         >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.3 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-3xl mx-auto"
+            className="max-w-7xl mx-auto flex flex-wrap items-center justify-start gap-2 sm:gap-3"
           >
             {[
               { value: "16+", label: "Years Legacy" },
@@ -169,10 +169,10 @@ const HeroSection = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 1.5 + i * 0.08 }}
-                className="rounded-xl p-4 text-center bg-background/80 backdrop-blur-md border border-border shadow-sm"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-background/90 backdrop-blur-md border border-border shadow-sm"
               >
-                <div className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
+                <span className="text-sm sm:text-base font-bold text-foreground">{stat.value}</span>
+                <span className="text-[11px] sm:text-xs text-muted-foreground whitespace-nowrap">{stat.label}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -206,7 +206,7 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: scrolled ? 0 : 1 }}
           transition={{ duration: 0.3 }}
-          className="absolute bottom-28 sm:bottom-24 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+          className="absolute bottom-20 right-6 z-20 hidden md:flex flex-col items-center gap-2"
         >
           <span className="text-xs text-foreground/35 uppercase tracking-[0.2em]">Scroll to explore</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
