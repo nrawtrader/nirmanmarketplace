@@ -8,6 +8,7 @@ import CartDrawer from "@/components/CartDrawer";
 import Index from "./pages/Index";
 import Calculator from "./pages/Calculator";
 import Products from "./pages/Products";
+import SteelDetail from "./pages/SteelDetail";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/calculator" element={<Calculator />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/steel/:id" element={<SteelDetail />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
