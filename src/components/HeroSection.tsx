@@ -69,7 +69,7 @@ const HeroSection = () => {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
                   </span>
-                  Trusted by 10,000+ Homeowners Since 2009
+                  Trusted by 50,000+ Homeowners Since 2006
                 </span>
               </motion.div>
 
@@ -161,7 +161,7 @@ const HeroSection = () => {
             {[
               { value: "20+", label: "Years Trust" },
               { value: "10+", label: "Brands" },
-              { value: "Same Day", label: "Delivery" },
+              { value: "6 Hours", label: "Delivery" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -205,7 +205,7 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: scrolled ? 0 : 1 }}
           transition={{ duration: 0.3 }}
-          className="absolute bottom-20 right-6 z-20 hidden md:flex flex-col items-center gap-2"
+          className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2"
         >
           <span className="text-xs text-foreground/35 uppercase tracking-[0.2em]">Scroll to explore</span>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
