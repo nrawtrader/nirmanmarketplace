@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Package, Plus, Minus, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Package, Plus, Minus, ShoppingCart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
@@ -13,7 +14,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const hasRealImage = product.image && product.image !== "/placeholder.svg";
+  const isSteel = product.category === "steel";
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -39,30 +42,42 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <h3 className="font-semibold text-foreground mb-2 line-clamp-2 leading-snug">{product.name}</h3>
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{product.description}</p>
 
-        {/* Quantity Controls */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-sm font-medium text-foreground">Qty:</span>
-          <div className="flex items-center border border-border rounded-lg overflow-hidden">
-            <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground">
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-            <span className="px-4 py-1.5 text-sm font-semibold text-foreground bg-secondary/40 min-w-[3rem] text-center">{quantity}</span>
-            <button onClick={() => setQuantity((q) => q + 1)} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground">
-              <Plus className="w-3.5 h-3.5" />
-            </button>
+        {!isSteel && (
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-sm font-medium text-foreground">Qty:</span>
+            <div className="flex items-center border border-border rounded-lg overflow-hidden">
+              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground">
+                <Minus className="w-3.5 h-3.5" />
+              </button>
+              <span className="px-4 py-1.5 text-sm font-semibold text-foreground bg-secondary/40 min-w-[3rem] text-center">{quantity}</span>
+              <button onClick={() => setQuantity((q) => q + 1)} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground">
+                <Plus className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <span className="text-xs text-muted-foreground">{product.unit}</span>
           </div>
-          <span className="text-xs text-muted-foreground">{product.unit}</span>
-        </div>
+        )}
 
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-xl font-bold text-foreground">₹{(product.price * quantity).toLocaleString("en-IN")}</span>
-            {quantity > 1 && <p className="text-xs text-muted-foreground">₹{product.price.toLocaleString("en-IN")} × {quantity}</p>}
+            <span className="text-xl font-bold text-foreground">
+              ₹{((isSteel ? product.price : product.price * quantity)).toLocaleString("en-IN")}
+            </span>
+            <p className="text-xs text-muted-foreground">
+              {isSteel ? `per ${product.unit} • choose size` : (quantity > 1 ? `₹${product.price.toLocaleString("en-IN")} × ${quantity}` : "")}
+            </p>
           </div>
-          <Button size="sm" onClick={handleAddToCart} className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all gap-1.5">
-            <ShoppingCart className="w-3.5 h-3.5" />
-            Add to Cart
-          </Button>
+          {isSteel ? (
+            <Button size="sm" onClick={() => navigate(`/steel/${product.id}`)} className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all gap-1.5">
+              Choose Size
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          ) : (
+            <Button size="sm" onClick={handleAddToCart} className="bg-accent text-accent-foreground hover:bg-accent/90 hover:scale-105 transition-all gap-1.5">
+              <ShoppingCart className="w-3.5 h-3.5" />
+              Add to Cart
+            </Button>
+          )}
         </div>
       </div>
     </div>
