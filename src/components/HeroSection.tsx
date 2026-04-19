@@ -156,13 +156,12 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.3 }}
-            className="max-w-7xl mx-auto flex flex-wrap items-center justify-start gap-2 sm:gap-3"
+            className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2 sm:gap-3"
           >
             {[
-              { value: "16+", label: "Years Legacy" },
-              { value: "500+", label: "Products" },
-              { value: "50+", label: "Brands" },
-              { value: "24hr", label: "Delivery" },
+              { value: "20+", label: "Years Trust" },
+              { value: "10+", label: "Brands" },
+              { value: "Same Day", label: "Delivery" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
