@@ -4,6 +4,8 @@ import accGoldImg from "@/assets/products/acc-gold-water-shield.webp";
 import accConcreteImg from "@/assets/products/acc-concrete-plus.webp";
 import ultratechWeatherImg from "@/assets/products/ultratech-weather-plus.png";
 import ultratechOpcImg from "@/assets/products/ultratech-opc.png";
+import rhlGoldImg from "@/assets/products/rhl-gold.png";
+import sigmaGriplockImg from "@/assets/products/sigma-griplock.png";
 
 export type ProductCategory = "cement" | "steel" | "sanitary";
 
@@ -94,38 +96,28 @@ export const products: Product[] = [
   },
   // Steel
   {
-    id: "stl-1",
-    name: "TATA Tiscon Fe500D TMT Bars",
-    brand: "TATA Tiscon",
+    id: "stl-rhl",
+    name: "RHL Gold Fe500 TMT Bars",
+    brand: "RHL Gold",
     category: "steel",
-    price: 65000,
+    price: 62000,
     unit: "ton",
-    image: "/placeholder.svg",
-    description: "High-strength Fe500D TMT reinforcement bars with superior ductility. Earthquake resistant.",
-    specs: { Grade: "Fe500D", Diameter: "8mm–32mm", Ductility: "High", "Corrosion Resistance": "CRS treated" },
-    tip: "Fe500D bars have higher elongation than Fe500 — preferred in earthquake-prone areas.",
+    image: rhlGoldImg,
+    description: "RHL Gold Fe500 TMT bars — trusted strength for residential and commercial construction. Available in all standard sizes.",
+    specs: { Grade: "Fe500", Diameter: "8mm–32mm", Ductility: "High", "Corrosion Resistance": "Superior" },
+    tip: "Choose your required diameter on the product page — common house construction uses 8mm, 10mm, 12mm and 16mm.",
   },
   {
-    id: "stl-2",
-    name: "JSW NeoSteel Fe550D",
-    brand: "JSW Steel",
+    id: "stl-sigma",
+    name: "Sigma Griplock Fe550D TMT Bars",
+    brand: "Sigma Griplock",
     category: "steel",
-    price: 68000,
+    price: 64000,
     unit: "ton",
-    image: "/placeholder.svg",
-    description: "Premium Fe550D TMT bars for heavy-duty structural applications.",
-    specs: { Grade: "Fe550D", Diameter: "10mm–32mm", Strength: "550 MPa", Ductility: "High" },
-  },
-  {
-    id: "stl-3",
-    name: "SAIL TMT Fe500",
-    brand: "SAIL",
-    category: "steel",
-    price: 60000,
-    unit: "ton",
-    image: "/placeholder.svg",
-    description: "Reliable Fe500 grade TMT bars from India's leading steel manufacturer.",
-    specs: { Grade: "Fe500", Diameter: "8mm–25mm", Manufacturer: "SAIL" },
+    image: sigmaGriplockImg,
+    description: "Sigma Griplock Fe550D TMT bars — premium grip ribs for stronger bond with concrete. Ideal for RCC structures.",
+    specs: { Grade: "Fe550D", Diameter: "8mm–32mm", Strength: "550 MPa", Ductility: "High" },
+    tip: "Fe550D offers higher tensile strength — recommended for multi-storey and earthquake-prone construction.",
   },
   // Sanitary
   {
@@ -176,6 +168,6 @@ export const products: Product[] = [
 
 export const brands: Record<ProductCategory, string[]> = {
   cement: ["UltraTech", "ACC", "Bangur", "MP Birla"],
-  steel: ["TATA Tiscon", "JSW Steel", "SAIL"],
+  steel: ["RHL Gold", "Sigma Griplock"],
   sanitary: ["Hindware", "Astral", "Jaquar", "Cera"],
 };
