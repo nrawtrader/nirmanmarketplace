@@ -11,7 +11,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const { addToCart } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -19,9 +19,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const isSteel = product.category === "steel";
 
   const handleAddToCart = () => {
+    if (quantity < 1) {
+      toast({ title: "Select quantity", description: "Please increase quantity before adding to cart." });
+      return;
+    }
     addToCart(product, quantity);
     toast({ title: "Added to cart!", description: `${quantity}× ${product.name}` });
-    setQuantity(1);
+    setQuantity(0);
   };
 
   return (
