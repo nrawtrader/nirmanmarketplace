@@ -11,7 +11,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const { addToCart } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -19,9 +19,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const isSteel = product.category === "steel";
 
   const handleAddToCart = () => {
+    if (quantity < 1) {
+      toast({ title: "Select quantity", description: "Please increase quantity before adding to cart." });
+      return;
+    }
     addToCart(product, quantity);
     toast({ title: "Added to cart!", description: `${quantity}× ${product.name}` });
-    setQuantity(1);
+    setQuantity(0);
   };
 
   return (
@@ -46,11 +50,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className="flex items-center gap-3 mb-4">
             <span className="text-sm font-medium text-foreground">Qty:</span>
             <div className="flex items-center border border-border rounded-lg overflow-hidden">
-              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground">
+              <button onClick={() => setQuantity((q) => Math.max(0, q - 1))} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground" aria-label="Decrease quantity">
                 <Minus className="w-3.5 h-3.5" />
               </button>
-              <span className="px-4 py-1.5 text-sm font-semibold text-foreground bg-secondary/40 min-w-[3rem] text-center">{quantity}</span>
-              <button onClick={() => setQuantity((q) => q + 1)} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground">
+              <input
+                type="number"
+                min={0}
+                value={quantity === 0 ? "" : quantity}
+                placeholder="0"
+                onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value || "0", 10)))}
+                className="w-14 text-center text-sm font-semibold text-foreground bg-secondary/40 py-1.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
+              <button onClick={() => setQuantity((q) => q + 1)} className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground" aria-label="Increase quantity">
                 <Plus className="w-3.5 h-3.5" />
               </button>
             </div>
