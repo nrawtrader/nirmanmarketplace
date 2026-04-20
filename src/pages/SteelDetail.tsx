@@ -21,6 +21,9 @@ const BAR_WEIGHT_KG: Record<string, number> = {
   "32mm": 75.72,
 };
 
+// 1 ton = 10 quintals
+const QUINTALS_PER_TON = 10;
+
 const SteelDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -29,7 +32,7 @@ const SteelDetail = () => {
 
   const product = products.find((p) => p.id === id && p.category === "steel");
 
-  // Sigma Griplock is sold by weight (tons), others by bars
+  // Sigma Griplock is sold by weight (quintals), others by bars
   const isWeightBased = product?.id === "stl-sigma";
 
   // Bar quantities for per-bar products
@@ -37,8 +40,8 @@ const SteelDetail = () => {
     () => Object.fromEntries(STEEL_SIZES.map((s) => [s, 0]))
   );
 
-  // Tonnage per size for weight-based products (in tons, supports decimals)
-  const [tonnages, setTonnages] = useState<Record<string, number>>(
+  // Quintals per size for weight-based products (supports decimals)
+  const [quintals, setQuintals] = useState<Record<string, number>>(
     () => Object.fromEntries(STEEL_SIZES.map((s) => [s, 0]))
   );
 
@@ -55,6 +58,9 @@ const SteelDetail = () => {
     );
   }
 
+  // Price per quintal = price per ton / 10
+  const pricePerQuintal = Math.round(product.price / QUINTALS_PER_TON);
+
   const updateQty = (size: string, delta: number) => {
     setQuantities((prev) => ({
       ...prev,
@@ -66,15 +72,15 @@ const SteelDetail = () => {
     setQuantities((prev) => ({ ...prev, [size]: Math.max(0, value) }));
   };
 
-  const updateTons = (size: string, delta: number) => {
-    setTonnages((prev) => ({
+  const updateQuintals = (size: string, delta: number) => {
+    setQuintals((prev) => ({
       ...prev,
       [size]: Math.max(0, +((prev[size] || 0) + delta).toFixed(2)),
     }));
   };
 
-  const setTons = (size: string, value: number) => {
-    setTonnages((prev) => ({
+  const setQuintalsValue = (size: string, value: number) => {
+    setQuintals((prev) => ({
       ...prev,
       [size]: Math.max(0, isNaN(value) ? 0 : +value.toFixed(2)),
     }));
@@ -91,10 +97,10 @@ const SteelDetail = () => {
     0
   );
 
-  // Totals — tons mode
-  const totalTons = +Object.values(tonnages).reduce((a, b) => a + b, 0).toFixed(3);
-  const totalPriceTons = Math.round(
-    STEEL_SIZES.reduce((sum, size) => sum + product.price * (tonnages[size] || 0), 0)
+  // Totals — quintals mode
+  const totalQuintals = +Object.values(quintals).reduce((a, b) => a + b, 0).toFixed(2);
+  const totalPriceQuintals = Math.round(
+    STEEL_SIZES.reduce((sum, size) => sum + pricePerQuintal * (quintals[size] || 0), 0)
   );
 
   const handleAddBars = () => {
@@ -120,29 +126,29 @@ const SteelDetail = () => {
     setQuantities(Object.fromEntries(STEEL_SIZES.map((s) => [s, 0])));
   };
 
-  const handleAddTons = () => {
-    if (totalTons === 0) {
-      toast({ title: "Enter tonnage", description: "Add quantity in tons for at least one size." });
+  const handleAddQuintals = () => {
+    if (totalQuintals === 0) {
+      toast({ title: "Enter quantity", description: "Add quantity in quintals for at least one size." });
       return;
     }
     STEEL_SIZES.forEach((size) => {
-      const tons = tonnages[size];
-      if (tons > 0) {
-        // Cart stores integer quantity. Encode tonnage in kg (1 ton = 1000 kg) for precision.
-        const kg = Math.round(tons * 1000);
+      const q = quintals[size];
+      if (q > 0) {
+        // Cart stores integer quantity. Encode as kg (1 quintal = 100 kg) for precision.
+        const kg = Math.round(q * 100);
         const sizedProduct = {
           ...product,
           id: `${product.id}-${size}`,
           name: `${product.name} — ${size}`,
           price: Math.round(product.price / 1000), // price per kg
           unit: "kg",
-          specs: { ...product.specs, Diameter: size, "Sold By": "Weight (tons)" },
+          specs: { ...product.specs, Diameter: size, "Sold By": "Weight (quintals)" },
         };
         addToCart(sizedProduct, kg);
       }
     });
-    toast({ title: "Added to cart!", description: `${totalTons} tons across selected sizes` });
-    setTonnages(Object.fromEntries(STEEL_SIZES.map((s) => [s, 0])));
+    toast({ title: "Added to cart!", description: `${totalQuintals} quintals across selected sizes` });
+    setQuintals(Object.fromEntries(STEEL_SIZES.map((s) => [s, 0])));
   };
 
   return (
@@ -189,11 +195,14 @@ const SteelDetail = () => {
               {isWeightBased && (
                 <div className="mt-4 rounded-lg border border-accent/30 bg-accent/5 p-3">
                   <p className="text-sm font-semibold text-foreground">
-                    ₹{product.price.toLocaleString("en-IN")}{" "}
-                    <span className="text-xs font-normal text-muted-foreground">/ ton</span>
+                    ₹{pricePerQuintal.toLocaleString("en-IN")}{" "}
+                    <span className="text-xs font-normal text-muted-foreground">/ quintal</span>
+                    <span className="text-[11px] font-normal text-muted-foreground ml-2">
+                      (₹{product.price.toLocaleString("en-IN")} / ton)
+                    </span>
                   </p>
                   <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Sold by weight — enter tonnage per size below.
+                    Sold by weight — enter quantity in quintals (1 quintal = 100 kg).
                   </p>
                 </div>
               )}
@@ -204,11 +213,11 @@ const SteelDetail = () => {
           <section className="rounded-2xl glass-panel p-6 sm:p-8 mb-8">
             <div className="mb-6">
               <h2 className="text-xl font-bold text-foreground mb-1">
-                {isWeightBased ? "Choose Size & Tonnage" : "Choose Size & Quantity"}
+                {isWeightBased ? "Choose Size & Quintals" : "Choose Size & Quantity"}
               </h2>
               <p className="text-sm text-muted-foreground">
                 {isWeightBased
-                  ? "Select bar diameter and enter the weight in tons (supports decimals, e.g. 0.5)."
+                  ? "Select bar diameter and enter the quantity in quintals (supports decimals, e.g. 0.5)."
                   : "Select bar diameter and adjust the number of 12-meter bars you need."}
               </p>
             </div>
@@ -216,9 +225,9 @@ const SteelDetail = () => {
             {isWeightBased ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {STEEL_SIZES.map((size) => {
-                  const tons = tonnages[size];
-                  const active = tons > 0;
-                  const lineTotal = Math.round(product.price * tons);
+                  const q = quintals[size];
+                  const active = q > 0;
+                  const lineTotal = Math.round(pricePerQuintal * q);
                   return (
                     <div
                       key={size}
@@ -232,7 +241,7 @@ const SteelDetail = () => {
                         <div>
                           <p className="text-lg font-bold text-foreground">{size}</p>
                           <p className="text-[11px] text-muted-foreground">
-                            ₹{product.price.toLocaleString("en-IN")} / ton
+                            ₹{pricePerQuintal.toLocaleString("en-IN")} / quintal
                           </p>
                         </div>
                         {active && (
@@ -244,27 +253,30 @@ const SteelDetail = () => {
 
                       <div className="flex items-center border border-border rounded-lg overflow-hidden">
                         <button
-                          onClick={() => updateTons(size, -0.5)}
+                          onClick={() => updateQuintals(size, -1)}
                           className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground"
-                          aria-label={`Decrease ${size} tons`}
+                          aria-label={`Decrease ${size} quintals`}
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
                         <input
                           type="number"
                           min={0}
-                          step={0.1}
-                          value={tons}
-                          onChange={(e) => setTons(size, parseFloat(e.target.value || "0"))}
+                          step={0.5}
+                          value={q === 0 ? "" : q}
+                          placeholder="0"
+                          onChange={(e) =>
+                            setQuintalsValue(size, parseFloat(e.target.value || "0"))
+                          }
                           className="flex-1 w-full text-center text-sm font-semibold text-foreground bg-secondary/40 py-1.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                         <span className="px-2 text-[11px] text-muted-foreground bg-secondary/40 py-1.5">
-                          tons
+                          qtl
                         </span>
                         <button
-                          onClick={() => updateTons(size, 0.5)}
+                          onClick={() => updateQuintals(size, 1)}
                           className="px-2.5 py-1.5 hover:bg-secondary transition-colors text-foreground"
-                          aria-label={`Increase ${size} tons`}
+                          aria-label={`Increase ${size} quintals`}
                         >
                           <Plus className="w-3.5 h-3.5" />
                         </button>
@@ -314,7 +326,8 @@ const SteelDetail = () => {
                           <input
                             type="number"
                             min={0}
-                            value={qty}
+                            value={qty === 0 ? "" : qty}
+                            placeholder="0"
                             onChange={(e) => setQty(size, parseInt(e.target.value || "0", 10))}
                             className="w-14 text-center text-sm font-semibold text-foreground bg-secondary/40 py-1.5 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
@@ -344,17 +357,17 @@ const SteelDetail = () => {
             <div>
               <p className="text-sm text-muted-foreground">
                 {isWeightBased
-                  ? `${totalTons} ton${totalTons === 1 ? "" : "s"} selected`
+                  ? `${totalQuintals} quintal${totalQuintals === 1 ? "" : "s"} selected`
                   : `${totalBars} bar${totalBars === 1 ? "" : "s"} selected`}
               </p>
               <p className="text-2xl font-bold text-foreground">
-                ₹{(isWeightBased ? totalPriceTons : totalPriceBars).toLocaleString("en-IN")}
+                ₹{(isWeightBased ? totalPriceQuintals : totalPriceBars).toLocaleString("en-IN")}
               </p>
             </div>
             <Button
               size="lg"
-              onClick={isWeightBased ? handleAddTons : handleAddBars}
-              disabled={isWeightBased ? totalTons === 0 : totalBars === 0}
+              onClick={isWeightBased ? handleAddQuintals : handleAddBars}
+              disabled={isWeightBased ? totalQuintals === 0 : totalBars === 0}
               className="bg-accent text-accent-foreground hover:bg-accent/90 gap-2"
             >
               <ShoppingCart className="w-4 h-4" />
