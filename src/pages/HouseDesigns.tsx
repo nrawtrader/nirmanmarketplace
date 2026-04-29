@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -6,6 +6,9 @@ import EstimateForm from "@/components/EstimateForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 import {
   HOUSE_DESIGNS,
   HouseDesign,
@@ -24,6 +27,8 @@ import {
   Plus,
   Minus,
   Square,
+  Ruler,
+  Eye,
 } from "lucide-react";
 
 const CHARACTERS: Character[] = ["Natural", "Rustic", "Industrial", "Classic", "Earthy", "Bright", "Bold"];
@@ -39,12 +44,13 @@ const HouseDesigns = () => {
   const [character, setCharacter] = useState<Character | null>(null);
   const [shape, setShape] = useState<Shape | null>(null);
   const [features, setFeatures] = useState<string[]>([]);
+  const [selected, setSelected] = useState<HouseDesign | null>(null);
+  const galleryRef = useRef<HTMLDivElement | null>(null);
 
   const toggleFeature = (f: string) =>
     setFeatures((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
 
-  const matches: HouseDesign[] = useMemo(() => {
-    // Score each design for relevance
+  const scoredMatches = useMemo(() => {
     const scored = HOUSE_DESIGNS.map((d) => {
       let score = 0;
       score -= Math.abs(d.bedrooms - bedrooms) * 4;
@@ -58,8 +64,18 @@ const HouseDesigns = () => {
       return { d, score };
     });
     scored.sort((a, b) => b.score - a.score);
-    return scored.map((s) => s.d);
+    return scored;
   }, [bedrooms, bathrooms, stories, sqft, character, shape, features]);
+
+  const matches = scoredMatches.map((s) => s.d);
+  const topScore = scoredMatches[0]?.score ?? 0;
+
+  const handleRequestCustom = () => {
+    galleryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    toast.success("Showing best-matching designs for your requirements", {
+      description: `${matches.length} plans ranked by your selections.`,
+    });
+  };
 
   const Stepper = ({
     label,
@@ -221,19 +237,18 @@ const HouseDesigns = () => {
                   </div>
                 </div>
 
-                <EstimateForm
-                  trigger={
-                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold h-11">
-                      <Wand2 className="w-4 h-4 mr-2" /> Request Custom Design
-                    </Button>
-                  }
-                />
+                <Button
+                  onClick={handleRequestCustom}
+                  className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold h-11"
+                >
+                  <Wand2 className="w-4 h-4 mr-2" /> Show Matching Designs
+                </Button>
               </CardContent>
             </Card>
           </aside>
 
           {/* RIGHT: Gallery */}
-          <section>
+          <section ref={galleryRef}>
             <div className="flex items-end justify-between mb-5">
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-foreground">Matching Floor Plans</h2>
@@ -247,63 +262,172 @@ const HouseDesigns = () => {
             </div>
 
             <div className="grid sm:grid-cols-2 gap-5">
-              {matches.map((d, i) => (
-                <motion.div
-                  key={d.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 border-border hover:border-accent/40 h-full flex flex-col">
-                    <div className="relative aspect-[4/3] bg-secondary overflow-hidden">
-                      <img
-                        src={d.image}
-                        alt={d.title}
-                        loading="lazy"
-                        width={1024}
-                        height={768}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <span className="absolute top-3 left-3 bg-background/90 backdrop-blur px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">
-                        {d.character}
-                      </span>
-                    </div>
-                    <CardContent className="pt-4 flex flex-col flex-1">
-                      <h3 className="font-bold text-foreground text-base leading-tight">{d.title}</h3>
-                      <p className="text-xs text-muted-foreground mb-3">{d.designer}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-3">
-                        <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
-                          {d.bedrooms} bd
+              {scoredMatches.map(({ d, score }, i) => {
+                const isTop = score === topScore && i < 2;
+                return (
+                  <motion.div
+                    key={d.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <Card
+                      onClick={() => setSelected(d)}
+                      className={`overflow-hidden group hover:shadow-xl transition-all duration-300 h-full flex flex-col cursor-pointer ${
+                        isTop ? "border-2 border-accent shadow-md" : "border-border hover:border-accent/40"
+                      }`}
+                    >
+                      <div className="relative aspect-[4/3] bg-secondary overflow-hidden">
+                        <img
+                          src={d.image}
+                          alt={d.title}
+                          loading="lazy"
+                          width={1024}
+                          height={768}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <span className="absolute top-3 left-3 bg-background/90 backdrop-blur px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">
+                          {d.character}
                         </span>
-                        <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
-                          {d.bathrooms} ba
-                        </span>
-                        <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
-                          {d.sqft.toLocaleString("en-IN")} ft²
-                        </span>
-                        <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
-                          {d.stories === 1 ? "G" : d.stories === 2 ? "G+1" : "G+2"}
-                        </span>
+                        {isTop && (
+                          <span className="absolute top-3 right-3 bg-accent text-accent-foreground px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide flex items-center gap-1">
+                            <Sparkles className="w-3 h-3" /> Best Match
+                          </span>
+                        )}
+                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                          <span className="bg-background text-foreground px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5">
+                            <Eye className="w-3.5 h-3.5" /> View Floor Plan
+                          </span>
+                        </div>
                       </div>
-                      <EstimateForm
-                        trigger={
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="mt-auto w-full hover:bg-accent hover:text-accent-foreground hover:border-accent transition-colors"
-                          >
-                            Get Quote for this Plan <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                          </Button>
-                        }
-                      />
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+                      <CardContent className="pt-4 flex flex-col flex-1">
+                        <h3 className="font-bold text-foreground text-base leading-tight">{d.title}</h3>
+                        <p className="text-xs text-muted-foreground mb-3">{d.designer}</p>
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
+                            {d.bedrooms} bd
+                          </span>
+                          <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
+                            {d.bathrooms} ba
+                          </span>
+                          <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
+                            {d.sqft.toLocaleString("en-IN")} ft²
+                          </span>
+                          <span className="text-[11px] bg-secondary px-2 py-0.5 rounded-full font-semibold">
+                            {d.stories === 1 ? "G" : d.stories === 2 ? "G+1" : "G+2"}
+                          </span>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => { e.stopPropagation(); setSelected(d); }}
+                          className="mt-auto w-full hover:bg-accent hover:text-accent-foreground hover:border-accent transition-colors"
+                        >
+                          View Full Plan <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
           </section>
         </div>
       </main>
+
+      {/* Plan Detail Modal */}
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto">
+          {selected && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-foreground">{selected.title}</DialogTitle>
+                <p className="text-sm text-muted-foreground">{selected.designer} · {selected.dimensions}</p>
+              </DialogHeader>
+
+              {/* Stat strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 my-4">
+                {[
+                  { icon: Bed, label: `${selected.bedrooms} Bed` },
+                  { icon: Bath, label: `${selected.bathrooms} Bath` },
+                  { icon: Square, label: `${selected.sqft.toLocaleString("en-IN")} ft²` },
+                  { icon: Layers, label: selected.stories === 1 ? "G Floor" : selected.stories === 2 ? "G+1" : "G+2" },
+                  { icon: Ruler, label: selected.dimensions },
+                ].map((s, i) => (
+                  <div key={i} className="bg-secondary/40 border border-border rounded-lg p-2 flex items-center gap-2">
+                    <s.icon className="w-4 h-4 text-accent" />
+                    <span className="text-xs font-semibold text-foreground">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Tabs defaultValue="floor" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="render">Rendering</TabsTrigger>
+                  <TabsTrigger value="floor">Floor Plan</TabsTrigger>
+                  <TabsTrigger value="elev">Elevations</TabsTrigger>
+                </TabsList>
+                <TabsContent value="render" className="mt-4">
+                  <div className="bg-secondary/30 rounded-xl p-3 border border-border">
+                    <img
+                      src={selected.image}
+                      alt={`${selected.title} rendering`}
+                      className="w-full rounded-lg object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </TabsContent>
+                <TabsContent value="floor" className="mt-4">
+                  <div className="bg-white rounded-xl p-3 border border-border">
+                    <div className="text-center text-xs uppercase tracking-widest text-muted-foreground mb-2 pb-2 border-b">
+                      Floor Plan — {selected.title}
+                    </div>
+                    <img
+                      src={selected.floorPlan}
+                      alt={`${selected.title} floor plan`}
+                      className="w-full rounded-lg object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                </TabsContent>
+                <TabsContent value="elev" className="mt-4">
+                  <div className="bg-white rounded-xl p-3 border border-border">
+                    <div className="text-center text-xs uppercase tracking-widest text-muted-foreground mb-2 pb-2 border-b">
+                      Elevations — Front · Back · Left · Right
+                    </div>
+                    <img
+                      src={selected.elevation}
+                      alt={`${selected.title} elevations`}
+                      className="w-full rounded-lg object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                </TabsContent>
+              </Tabs>
+
+              <div className="mt-4 space-y-3">
+                <p className="text-sm text-foreground/80 leading-relaxed">{selected.description}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {selected.features.map((f) => (
+                    <span key={f} className="text-[11px] bg-accent/10 text-accent px-2 py-0.5 rounded-full font-semibold border border-accent/20">
+                      {f}
+                    </span>
+                  ))}
+                </div>
+
+                <EstimateForm
+                  trigger={
+                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold h-11 mt-2">
+                      Get Material Quote for this Plan <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  }
+                />
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
   );
