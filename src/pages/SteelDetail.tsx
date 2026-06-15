@@ -28,13 +28,13 @@ const BAR_WEIGHT_KG: Record<string, number> = {
 // Just change the number after each size below
 // ─────────────────────────────────────────────────────────────────
 const RHL_PRICE_PER_KG: Record<string, number> = {
-  "8mm":  62,   // ₹ per kg
-  "10mm": 62,
-  "12mm": 61,
-  "16mm": 61,
-  "20mm": 60,
-  "25mm": 60,
-  "32mm": 59,
+  "8mm":  318,   // ₹ per kg
+  "10mm": 479,
+  "12mm": 692,
+  "16mm": 1232,
+  "20mm": 1948,
+  "25mm": 3035,
+  "32mm": 5106,
 };
 
 // ─────────────────────────────────────────────────────────────────
@@ -43,13 +43,13 @@ const RHL_PRICE_PER_KG: Record<string, number> = {
 // Just change the number after each size below
 // ─────────────────────────────────────────────────────────────────
 const SIGMA_PRICE_PER_KG: Record<string, number> = {
-  "8mm":  65,   // ₹ per kg
-  "10mm": 64,
-  "12mm": 63,
-  "16mm": 63,
-  "20mm": 62,
-  "25mm": 61,
-  "32mm": 60,
+  "8mm":  60,   // ₹ per kg
+  "10mm": 58,
+  "12mm": 58,
+  "16mm": 58,
+  "20mm": 58,
+  "25mm": 58,
+  "32mm": 58,
 };
 
 const SteelDetail = () => {
