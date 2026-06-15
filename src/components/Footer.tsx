@@ -44,7 +44,8 @@ const Footer = () => {
                 { label: "Home", to: "/" },
                 { label: "Products", to: "/products" },
                 { label: "Material Calculator", to: "/calculator" },
-                { label: "Floor Plan Generator", to: "#" },
+                { label: "House Designs", to: "/designs" },
+                { label: "Track Order", to: "/track-order" },
               ].map(link => (
                 <li key={link.label}>
                   <Link to={link.to} className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 group">
