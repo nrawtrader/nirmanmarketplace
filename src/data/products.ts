@@ -7,7 +7,7 @@ import ultratechOpcImg from "@/assets/products/ultratech-opc.png";
 import rhlGoldImg from "@/assets/products/rhl-gold.png";
 import sigmaGriplockImg from "@/assets/products/sigma-griplock.png";
 
-export type ProductCategory = "cement" | "steel" | "sanitary" | "paint" | "aggregate";
+export type ProductCategory = "cement" | "steel";
 
 export interface Product {
   id: string;
@@ -23,7 +23,7 @@ export interface Product {
 }
 
 export const products: Product[] = [
-  // Cement
+  // ── CEMENT ──────────────────────────────────────────────
   {
     id: "cem-1",
     name: "UltraTech Cement OPC 53 Grade",
@@ -34,7 +34,7 @@ export const products: Product[] = [
     image: ultratechOpcImg,
     description: "India's No.1 Cement — The Engineer's Choice. Premium OPC 53 grade for high-strength RCC, foundations, and structural work.",
     specs: { Grade: "OPC 53", Weight: "50 kg", Type: "Ordinary Portland Cement", "Setting Time": "30 min initial" },
-    tip: "1 bag of OPC 53 cement can produce approximately 1.25 cubic feet of concrete (1:2:4 mix).",
+    tip: "1 bag of OPC 53 cement produces approximately 1.25 cubic feet of concrete (1:2:4 mix).",
   },
   {
     id: "cem-2",
@@ -46,7 +46,7 @@ export const products: Product[] = [
     image: ultratechWeatherImg,
     description: "India's No.1 Cement with enhanced weather resistance. Ideal for exterior plastering and areas exposed to rain and humidity.",
     specs: { Grade: "PPC", Weight: "50 kg", Type: "Weather Resistant Cement", "Water Resistance": "Superior" },
-    tip: "Weather Plus cement is specially formulated for external walls and roofs exposed to harsh weather.",
+    tip: "Weather Plus is specially formulated for external walls and roofs exposed to harsh weather.",
   },
   {
     id: "cem-3",
@@ -58,7 +58,7 @@ export const products: Product[] = [
     image: accGoldImg,
     description: "Adani ACC Gold Water Shield — advanced water-repelling cement for superior durability against moisture and seepage.",
     specs: { Grade: "PPC", Weight: "50 kg", Type: "Water Shield Cement", Durability: "High" },
-    tip: "ACC Gold Water Shield is ideal for areas with high moisture — basements, bathrooms, and external walls.",
+    tip: "Ideal for basements, bathrooms, and external walls prone to moisture.",
   },
   {
     id: "cem-4",
@@ -92,9 +92,9 @@ export const products: Product[] = [
     image: mpBirlaImg,
     description: "MP Birla Cement Perfect Plus — Portland Pozzolana Cement with extra additives for extra strength. Fly ash based.",
     specs: { Grade: "PPC", Weight: "50 kg", Type: "Portland Pozzolana Cement (Fly Ash)", Additives: "Extra Strength" },
-    tip: "PPC with fly ash offers better workability and long-term strength gain compared to regular PPC.",
+    tip: "PPC with fly ash offers better workability and long-term strength compared to regular PPC.",
   },
-  // Steel
+  // ── STEEL ───────────────────────────────────────────────
   {
     id: "stl-rhl",
     name: "RHL Gold Fe500 TMT Bars",
@@ -105,7 +105,7 @@ export const products: Product[] = [
     image: rhlGoldImg,
     description: "RHL Gold Fe500 TMT bars — trusted strength for residential and commercial construction. Available in all standard sizes.",
     specs: { Grade: "Fe500", Diameter: "8mm–32mm", Ductility: "High", "Corrosion Resistance": "Superior" },
-    tip: "Choose your required diameter on the product page — common house construction uses 8mm, 10mm, 12mm and 16mm.",
+    tip: "Common house construction uses 8mm, 10mm, 12mm and 16mm diameter bars.",
   },
   {
     id: "stl-sigma",
@@ -119,163 +119,9 @@ export const products: Product[] = [
     specs: { Grade: "Fe550D", Diameter: "8mm–32mm", Strength: "550 MPa", Ductility: "High" },
     tip: "Fe550D offers higher tensile strength — recommended for multi-storey and earthquake-prone construction.",
   },
-  // Sanitary
-  {
-    id: "san-1",
-    name: "Hindware Wash Basin",
-    brand: "Hindware",
-    category: "sanitary",
-    price: 3500,
-    unit: "piece",
-    image: "/placeholder.svg",
-    description: "Premium ceramic wall-mounted wash basin with modern design.",
-    specs: { Type: "Wall Mounted", Material: "Ceramic", Color: "White", Size: "18×14 inches" },
-  },
-  {
-    id: "san-2",
-    name: "Astral CPVC Pipes 1 inch",
-    brand: "Astral",
-    category: "sanitary",
-    price: 450,
-    unit: "3m pipe",
-    image: "/placeholder.svg",
-    description: "CPVC pipes for hot and cold water supply. Lead-free and corrosion resistant.",
-    specs: { Type: "CPVC", Diameter: "1 inch", Length: "3 meters", "Temp Rating": "Up to 93°C" },
-  },
-  {
-    id: "san-3",
-    name: "Jaquar Shower Set",
-    brand: "Jaquar",
-    category: "sanitary",
-    price: 8500,
-    unit: "set",
-    image: "/placeholder.svg",
-    description: "Complete overhead and hand shower set with rain spray technology.",
-    specs: { Type: "Shower Set", Finish: "Chrome", "Spray Type": "Rain + Hand", Warranty: "5 years" },
-  },
-  {
-    id: "san-4",
-    name: "Cera Western Toilet",
-    brand: "Cera",
-    category: "sanitary",
-    price: 7200,
-    unit: "piece",
-    image: "/placeholder.svg",
-    description: "One-piece western toilet with soft-close seat and dual flush system.",
-    specs: { Type: "One-piece EWC", Material: "Ceramic", Flush: "Dual 3/6L", Color: "White" },
-  },
-  {
-    id: "san-5",
-    name: "Parryware Floor Drain (Set of 4)",
-    brand: "Parryware",
-    category: "sanitary",
-    price: 850,
-    unit: "set of 4",
-    image: "/placeholder.svg",
-    description: "Stainless steel floor drains with anti-mosquito trap. Prevents foul smell and blockage.",
-    specs: { Type: "Floor Drain", Material: "SS 304", Size: "4 inch", "Anti-Odor": "Yes" },
-    tip: "Install drains before tiling for leak-proof results.",
-  },
-  {
-    id: "san-6",
-    name: "Astral CPVC Pipe 0.75 inch",
-    brand: "Astral",
-    category: "sanitary",
-    price: 320,
-    unit: "3m pipe",
-    image: "/placeholder.svg",
-    description: "CPVC pipe for hot & cold water supply in bathrooms and kitchens. ISI marked.",
-    specs: { Type: "CPVC", Diameter: "0.75 inch", Length: "3 meters", "Temp Rating": "Up to 93°C" },
-  },
-  {
-    id: "san-7",
-    name: "Hindware Water Closet P-Trap",
-    brand: "Hindware",
-    category: "sanitary",
-    price: 5800,
-    unit: "piece",
-    image: "/placeholder.svg",
-    description: "Elegant wall-hung toilet with concealed cistern support. Space-saving and easy to clean.",
-    specs: { Type: "Wall Hung EWC", Material: "Vitreous China", Flush: "Dual 4/6L", Warranty: "1 year" },
-  },
-  // Paint
-  {
-    id: "pnt-1",
-    name: "Asian Paints Tractor Emulsion",
-    brand: "Asian Paints",
-    category: "paint",
-    price: 3200,
-    unit: "20L bucket",
-    image: "/placeholder.svg",
-    description: "Premium interior emulsion paint with anti-bacterial protection and smooth finish.",
-    specs: { Type: "Interior Emulsion", Coverage: "140–160 sq ft/L", Finish: "Matt", Coats: "2 coats recommended" },
-    tip: "One 20L bucket covers approximately 2,800–3,200 sq ft with 2 coats.",
-  },
-  {
-    id: "pnt-2",
-    name: "Berger WeatherCoat Exterior Paint",
-    brand: "Berger",
-    category: "paint",
-    price: 4200,
-    unit: "20L bucket",
-    image: "/placeholder.svg",
-    description: "All-weather exterior paint with 10-year warranty. Protects walls from rain, sun, and algae.",
-    specs: { Type: "Exterior Acrylic", Coverage: "120–140 sq ft/L", Finish: "Sheen", Warranty: "10 years" },
-    tip: "Always apply a primer coat before WeatherCoat for best adhesion.",
-  },
-  {
-    id: "pnt-3",
-    name: "Dulux Weathershield Power+ Primer",
-    brand: "Dulux",
-    category: "paint",
-    price: 1100,
-    unit: "10L can",
-    image: "/placeholder.svg",
-    description: "Alkali-resistant exterior primer. Essential first coat before applying exterior paint.",
-    specs: { Type: "Exterior Primer", Coverage: "80–100 sq ft/L", Drying: "4 hours", Application: "Brush/Roller" },
-  },
-  // Aggregates / Sand / Bricks
-  {
-    id: "agg-1",
-    name: "M-Sand (Manufactured Sand)",
-    brand: "LocalMart",
-    category: "aggregate",
-    price: 1800,
-    unit: "ton",
-    image: "/placeholder.svg",
-    description: "High-quality manufactured sand for concrete mixing and plastering. Clean and graded.",
-    specs: { Type: "M-Sand", Grade: "Zone II", "Silt Content": "< 2%", Use: "Concrete & Plaster" },
-    tip: "M-Sand is a superior alternative to river sand — uniform size and cleaner.",
-  },
-  {
-    id: "agg-2",
-    name: "20mm Blue Metal Aggregate",
-    brand: "LocalMart",
-    category: "aggregate",
-    price: 2100,
-    unit: "ton",
-    image: "/placeholder.svg",
-    description: "Crushed granite aggregate for RCC work. Ideal for concrete mixing in columns, beams, slabs.",
-    specs: { Type: "Granite Aggregate", Size: "20mm", Shape: "Cubical", Use: "RCC & Foundations" },
-  },
-  {
-    id: "agg-3",
-    name: "Fly Ash Bricks (500 pcs)",
-    brand: "LocalMart",
-    category: "aggregate",
-    price: 5500,
-    unit: "500 bricks",
-    image: "/placeholder.svg",
-    description: "Eco-friendly fly ash bricks. Stronger, lighter, and more uniform than red clay bricks.",
-    specs: { Size: "9×4.5×3 inches", Strength: "7.5 N/mm²", "Water Absorption": "< 15%", "Thermal Insulation": "Better than red brick" },
-    tip: "Fly ash bricks reduce cement consumption by 30% due to better uniformity.",
-  },
 ];
 
 export const brands: Record<ProductCategory, string[]> = {
   cement: ["UltraTech", "ACC", "Bangur", "MP Birla"],
   steel: ["RHL Gold", "Sigma Griplock"],
-  sanitary: ["Hindware", "Astral", "Jaquar", "Cera", "Parryware"],
-  paint: ["Asian Paints", "Berger", "Dulux"],
-  aggregate: ["LocalMart"],
 };

@@ -45,6 +45,7 @@ const Footer = () => {
                 { label: "Products", to: "/products" },
                 { label: "Material Calculator", to: "/calculator" },
                 { label: "House Designs", to: "/designs" },
+                { label: "Blog & Guides", to: "/blog" },
                 { label: "Track Order", to: "/track-order" },
               ].map(link => (
                 <li key={link.label}>
