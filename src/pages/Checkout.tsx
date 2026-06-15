@@ -23,6 +23,18 @@ const INDIAN_STATES = [
   "Delhi", "Jammu & Kashmir", "Ladakh",
 ];
 
+const Field = ({
+  id, label, required, error, children,
+}: { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }) => (
+  <div className="space-y-1.5" data-error={error ? true : undefined}>
+    <Label htmlFor={id} className={error ? "text-destructive" : ""}>
+      {label} {required && <span className="text-destructive">*</span>}
+    </Label>
+    {children}
+    {error && <p className="text-xs text-destructive">{error}</p>}
+  </div>
+);
+
 const Checkout = () => {
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const { addOrder } = useOrders();
@@ -76,7 +88,7 @@ const Checkout = () => {
   };
 
   const whatsappMsg = (order: Order) =>
-    `https://wa.me/919876543210?text=${encodeURIComponent(
+    `https://wa.me/919198391797?text=${encodeURIComponent(
       `Hi! I placed an order on Nirman MarketPlace.\nOrder ID: ${order.id}\nName: ${order.form.name}\nMobile: ${order.form.phone}\nTotal: ₹${order.total.toLocaleString("en-IN")}\n\nPlease confirm my order.`
     )}`;
 
@@ -96,13 +108,13 @@ const Checkout = () => {
             <h1 className="text-2xl font-bold text-foreground mb-2">Order Placed Successfully!</h1>
             <p className="text-muted-foreground mb-6">
               Thank you, <strong>{placedOrder.form.name}</strong>! Our team will call you on{" "}
-              <strong>{placedOrder.form.phone}</strong> to confirm delivery.
+              <strong>+91 {placedOrder.form.phone}</strong> shortly to confirm your order.
             </p>
 
             {/* Order ID box */}
-            <div className="rounded-xl border border-border bg-card p-5 mb-4 text-left">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm text-muted-foreground">Your Order ID</span>
+            <div className="rounded-xl border-2 border-accent/30 bg-accent/5 p-5 mb-4 text-left">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-foreground">Your Tracking ID</span>
                 <button
                   onClick={() => copyOrderId(placedOrder.id)}
                   className="text-xs text-accent hover:underline flex items-center gap-1"
@@ -110,31 +122,30 @@ const Checkout = () => {
                   <Copy className="w-3 h-3" /> Copy
                 </button>
               </div>
-              <p className="text-xl font-bold text-foreground font-mono tracking-widest">{placedOrder.id}</p>
-              <p className="text-xs text-muted-foreground mt-1">Save this to track your order</p>
+              <p className="text-2xl font-bold text-accent font-mono tracking-widest">{placedOrder.id}</p>
+              <p className="text-xs text-muted-foreground mt-1">Use this ID to track your order anytime</p>
             </div>
 
+            {/* Call notice */}
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 mb-4 text-left">
+              <p className="text-sm font-semibold text-amber-800 mb-1">📞 Our team will call you ASAP</p>
+              <p className="text-xs text-amber-700">
+                We will confirm your order, discuss delivery charges, and schedule a convenient delivery time during the call.
+              </p>
+            </div>
+
+            {/* Delivery price notice */}
             <div className="rounded-xl border border-border bg-card p-4 mb-6 text-left">
-              <div className="flex items-center gap-2 text-sm font-medium text-foreground mb-2">
-                <Truck className="w-4 h-4 text-accent" />
-                Estimated Delivery
-              </div>
-              <p className="text-foreground font-semibold">{placedOrder.estimatedDelivery}</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Delivery to: {placedOrder.form.address}, {placedOrder.form.city} — {placedOrder.form.pincode}
+              <p className="text-xs text-muted-foreground">
+                <strong className="text-foreground">Note on Delivery:</strong> Delivery charges depend on your location and order size. The exact delivery price will be shared with you on the confirmation call.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={whatsappMsg(placedOrder)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1"
-              >
+              <a href={whatsappMsg(placedOrder)} target="_blank" rel="noopener noreferrer" className="flex-1">
                 <Button variant="outline" className="w-full border-green-500 text-green-700 hover:bg-green-50 gap-2">
                   <MessageCircle className="w-4 h-4" />
-                  Confirm on WhatsApp
+                  Message on WhatsApp
                 </Button>
               </a>
               <Link to="/track-order" className="flex-1">
@@ -177,18 +188,6 @@ const Checkout = () => {
     );
   }
 
-  const Field = ({
-    id, label, required, error, children,
-  }: { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }) => (
-    <div className="space-y-1.5" data-error={error ? true : undefined}>
-      <Label htmlFor={id} className={error ? "text-destructive" : ""}>
-        {label} {required && <span className="text-destructive">*</span>}
-      </Label>
-      {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -205,8 +204,8 @@ const Checkout = () => {
           <div className="flex flex-wrap gap-3 mb-8">
             {[
               { icon: <Shield className="w-4 h-4" />, label: "100% Genuine Products" },
-              { icon: <Truck className="w-4 h-4" />, label: "Free Delivery" },
-              { icon: <Clock className="w-4 h-4" />, label: "3–5 Day Delivery" },
+              { icon: <Truck className="w-4 h-4" />, label: "Doorstep Delivery" },
+              { icon: <Clock className="w-4 h-4" />, label: "Confirmation Call Within Hours" },
             ].map((b) => (
               <div key={b.label} className="flex items-center gap-2 text-xs text-muted-foreground bg-secondary/50 px-3 py-1.5 rounded-full">
                 <span className="text-accent">{b.icon}</span>
@@ -361,8 +360,17 @@ const Checkout = () => {
                 {submitting ? "Placing Order..." : `Place Order — ₹${totalPrice.toLocaleString("en-IN")}`}
               </Button>
 
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-center">
+                <p className="text-xs text-amber-800 font-medium">
+                  📦 Delivery charges will be confirmed on your order confirmation call
+                </p>
+                <p className="text-xs text-amber-700 mt-0.5">
+                  Final delivery price depends on your location and order quantity
+                </p>
+              </div>
+
               <p className="text-center text-xs text-muted-foreground">
-                By placing your order, you agree to our terms. Our team will call to confirm.
+                By placing your order, you agree to our terms. Our team will call you ASAP to confirm.
               </p>
             </form>
 
@@ -401,7 +409,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Delivery</span>
-                    <span className="text-green-600 font-medium">FREE</span>
+                    <span className="text-muted-foreground italic">On confirmation call</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">GST</span>
@@ -413,9 +421,9 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                  <p className="text-xs text-green-700 font-medium">Free delivery on all orders!</p>
-                  <p className="text-xs text-green-600 mt-0.5">Materials delivered to your construction site</p>
+                <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                  <p className="text-xs text-amber-800 font-medium">📞 Delivery charges confirmed on call</p>
+                  <p className="text-xs text-amber-700 mt-0.5">Our team will call you ASAP after order placement</p>
                 </div>
               </div>
             </div>

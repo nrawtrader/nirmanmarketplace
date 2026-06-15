@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MessageCircle, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const WHATSAPP_NUMBER = "919876543210";
+const WHATSAPP_NUMBER = "919198391797";
 
 const WhatsAppFAB = () => {
   const [open, setOpen] = useState(false);
@@ -55,11 +55,11 @@ const WhatsAppFAB = () => {
               </div>
               <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919198391797"
                   className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900"
                 >
                   <Phone className="w-3.5 h-3.5" />
-                  Call: +91 98765 43210
+                  Call: +91 91983 91797
                 </a>
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}`}

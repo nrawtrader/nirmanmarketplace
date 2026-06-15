@@ -88,7 +88,7 @@ const TrackOrder = () => {
                     Please check your Order ID. It looks like NM-YYMMDD-XXXX
                   </p>
                   <a
-                    href="https://wa.me/919876543210"
+                    href="https://wa.me/919198391797"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -204,13 +204,13 @@ const TrackOrder = () => {
                       Call us or chat on WhatsApp — we're available 9 AM to 6 PM, Monday to Saturday.
                     </p>
                     <div className="flex gap-3">
-                      <a href="tel:+919876543210">
+                      <a href="tel:+919198391797">
                         <Button size="sm" variant="outline" className="gap-1.5 border-green-500 text-green-700 hover:bg-green-100">
                           <Phone className="w-3.5 h-3.5" />
                           Call Us
                         </Button>
                       </a>
-                      <a href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi! I need help with my order ${found.id}`)}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://wa.me/919198391797?text=${encodeURIComponent(`Hi! I need help with my order ${found.id}`)}`} target="_blank" rel="noopener noreferrer">
                         <Button size="sm" className="gap-1.5 bg-green-600 hover:bg-green-700 text-white">
                           <MessageCircle className="w-3.5 h-3.5" />
                           WhatsApp
@@ -227,7 +227,7 @@ const TrackOrder = () => {
           {!searched && (
             <div className="text-center p-8 text-sm text-muted-foreground">
               <Clock className="w-8 h-8 mx-auto mb-3 opacity-30" />
-              <p>Can't find your Order ID? Call us at <strong>+91 98765 43210</strong></p>
+              <p>Can't find your Order ID? Call us at <strong>+91 91983 91797</strong></p>
               <p className="mt-1">We're available Mon–Sat, 9 AM – 6 PM</p>
             </div>
           )}
