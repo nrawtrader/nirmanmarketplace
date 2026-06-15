@@ -23,6 +23,18 @@ const INDIAN_STATES = [
   "Delhi", "Jammu & Kashmir", "Ladakh",
 ];
 
+const Field = ({
+  id, label, required, error, children,
+}: { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }) => (
+  <div className="space-y-1.5" data-error={error ? true : undefined}>
+    <Label htmlFor={id} className={error ? "text-destructive" : ""}>
+      {label} {required && <span className="text-destructive">*</span>}
+    </Label>
+    {children}
+    {error && <p className="text-xs text-destructive">{error}</p>}
+  </div>
+);
+
 const Checkout = () => {
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const { addOrder } = useOrders();
@@ -175,18 +187,6 @@ const Checkout = () => {
       </div>
     );
   }
-
-  const Field = ({
-    id, label, required, error, children,
-  }: { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }) => (
-    <div className="space-y-1.5" data-error={error ? true : undefined}>
-      <Label htmlFor={id} className={error ? "text-destructive" : ""}>
-        {label} {required && <span className="text-destructive">*</span>}
-      </Label>
-      {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-background">
