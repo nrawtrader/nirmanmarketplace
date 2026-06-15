@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useOrders, Order } from "@/contexts/OrderContext";
+import { sendOrderNotification } from "@/lib/emailService";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -60,11 +61,13 @@ const Checkout = () => {
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       const order = addOrder({ items, total: totalPrice, form });
       clearCart();
       setPlacedOrder(order);
       setSubmitting(false);
+      // Send email notification to owner (silently — don't block the success screen)
+      try { await sendOrderNotification(order); } catch { /* email failed, order still placed */ }
     }, 1200);
   };
 

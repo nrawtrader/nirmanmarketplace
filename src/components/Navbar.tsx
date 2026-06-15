@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import EstimateForm from "./EstimateForm";
 import logo from "@/assets/logo.png";
 
@@ -20,6 +21,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { totalItems, setIsCartOpen } = useCart();
+  const { user, signOut, setIsSignInOpen } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -87,15 +89,29 @@ const Navbar = () => {
                 </span>
               )}
             </button>
-            <Button
-              variant="outline"
-              size="sm"
-              className={`transition-all duration-300 ${
-                showSolid ? "" : "border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
-              }`}
-            >
-              Sign In
-            </Button>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <User className="w-4 h-4" />
+                  {user.name || `+91 ${user.phone}`}
+                </span>
+                <Button variant="ghost" size="sm" onClick={signOut} className="gap-1.5 text-muted-foreground hover:text-foreground">
+                  <LogOut className="w-3.5 h-3.5" />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsSignInOpen(true)}
+                className={`transition-all duration-300 ${
+                  showSolid ? "" : "border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
+                }`}
+              >
+                Sign In
+              </Button>
+            )}
             <EstimateForm />
           </div>
 
@@ -148,7 +164,22 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="pt-2 flex flex-col gap-2">
-                <Button variant="outline" size="sm" className="w-full">Sign In</Button>
+                {user ? (
+                  <div className="flex items-center justify-between px-1">
+                    <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <User className="w-4 h-4" />
+                      {user.name || `+91 ${user.phone}`}
+                    </span>
+                    <Button variant="ghost" size="sm" onClick={() => { signOut(); setOpen(false); }} className="gap-1.5 text-muted-foreground">
+                      <LogOut className="w-3.5 h-3.5" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="outline" size="sm" className="w-full" onClick={() => { setIsSignInOpen(true); setOpen(false); }}>
+                    Sign In
+                  </Button>
+                )}
                 <EstimateForm />
               </div>
             </div>
