@@ -72,10 +72,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="flex items-end justify-between">
           <div>
             <span className="text-xl font-bold text-foreground">
-              ₹{((isSteel ? product.price : product.price * quantity)).toLocaleString("en-IN")}
+              ₹{(isSteel ? product.price : quantity > 0 ? product.price * quantity : product.price).toLocaleString("en-IN")}
             </span>
             <p className="text-xs text-muted-foreground">
-              {isSteel ? `per ${product.unit} • choose size` : (quantity > 1 ? `₹${product.price.toLocaleString("en-IN")} × ${quantity}` : "")}
+              {isSteel ? `per ${product.unit} • choose size` : quantity > 1 ? `₹${product.price.toLocaleString("en-IN")} × ${quantity}` : `per ${product.unit}`}
             </p>
           </div>
           {isSteel ? (
