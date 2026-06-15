@@ -23,18 +23,17 @@ const BAR_WEIGHT_KG: Record<string, number> = {
 
 // ─────────────────────────────────────────────────────────────────
 // PRICE TABLE — UPDATE THESE WHEN MARKET RATES CHANGE
-// RHL Gold is sold PER BAR (12m piece)
-// Price shown to customer = price per kg × bar weight
-// Just change the number after each size below
+// RHL Gold — enter the PRICE PER BAR (per 12m piece) for each size
+// This is the exact amount the customer will be charged per bar
 // ─────────────────────────────────────────────────────────────────
-const RHL_PRICE_PER_KG: Record<string, number> = {
-  "8mm":  62,   // ₹ per kg
-  "10mm": 62,
-  "12mm": 61,
-  "16mm": 61,
-  "20mm": 60,
-  "25mm": 60,
-  "32mm": 59,
+const RHL_PRICE_PER_BAR: Record<string, number> = {
+  "8mm":  318,    // ₹ per 12m bar
+  "10mm": 479,
+  "12mm": 692,
+  "16mm": 1232,
+  "20mm": 1948,
+  "25mm": 3035,
+  "32mm": 5106,
 };
 
 // ─────────────────────────────────────────────────────────────────
@@ -86,11 +85,8 @@ const SteelDetail = () => {
     );
   }
 
-  // Price per kg — use size-specific table
-  const pricePerKg = (size: string) =>
-    isWeightBased
-      ? (SIGMA_PRICE_PER_KG[size] ?? 63)
-      : (RHL_PRICE_PER_KG[size] ?? 62);
+  // Price per kg for Sigma (weight-based)
+  const pricePerKg = (size: string) => SIGMA_PRICE_PER_KG[size] ?? 63;
 
   // Price per quintal (100 kg) for Sigma
   const pricePerQuintal = (size: string) => pricePerKg(size) * 100;
@@ -120,9 +116,8 @@ const SteelDetail = () => {
     }));
   };
 
-  // Price per bar = price per kg × bar weight
-  const pricePerBar = (size: string) =>
-    Math.round(pricePerKg(size) * BAR_WEIGHT_KG[size]);
+  // Price per bar — direct from table (no calculation needed)
+  const pricePerBar = (size: string) => RHL_PRICE_PER_BAR[size] ?? 0;
 
   // Totals — bars mode
   const totalBars = Object.values(quantities).reduce((a, b) => a + b, 0);
