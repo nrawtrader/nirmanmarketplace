@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const STEEL_SIZES = ["8mm", "10mm", "12mm", "16mm", "20mm", "25mm", "32mm"];
 
-// Approximate weight (kg) per 12m bar — used only to show indicative weight info
+// Approximate weight (kg) per 12m bar
 const BAR_WEIGHT_KG: Record<string, number> = {
   "8mm": 4.74,
   "10mm": 7.4,
@@ -21,8 +21,36 @@ const BAR_WEIGHT_KG: Record<string, number> = {
   "32mm": 75.72,
 };
 
-// 1 ton = 10 quintals
-const QUINTALS_PER_TON = 10;
+// ─────────────────────────────────────────────────────────────────
+// PRICE TABLE — UPDATE THESE WHEN MARKET RATES CHANGE
+// RHL Gold is sold PER BAR (12m piece)
+// Price shown to customer = price per kg × bar weight
+// Just change the number after each size below
+// ─────────────────────────────────────────────────────────────────
+const RHL_PRICE_PER_KG: Record<string, number> = {
+  "8mm":  62,   // ₹ per kg
+  "10mm": 62,
+  "12mm": 61,
+  "16mm": 61,
+  "20mm": 60,
+  "25mm": 60,
+  "32mm": 59,
+};
+
+// ─────────────────────────────────────────────────────────────────
+// Sigma Griplock is sold PER KG (enter quantity in quintals)
+// Price shown = price per kg entered here
+// Just change the number after each size below
+// ─────────────────────────────────────────────────────────────────
+const SIGMA_PRICE_PER_KG: Record<string, number> = {
+  "8mm":  65,   // ₹ per kg
+  "10mm": 64,
+  "12mm": 63,
+  "16mm": 63,
+  "20mm": 62,
+  "25mm": 61,
+  "32mm": 60,
+};
 
 const SteelDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,8 +86,14 @@ const SteelDetail = () => {
     );
   }
 
-  // Price per quintal = price per ton / 10
-  const pricePerQuintal = Math.round(product.price / QUINTALS_PER_TON);
+  // Price per kg — use size-specific table
+  const pricePerKg = (size: string) =>
+    isWeightBased
+      ? (SIGMA_PRICE_PER_KG[size] ?? 63)
+      : (RHL_PRICE_PER_KG[size] ?? 62);
+
+  // Price per quintal (100 kg) for Sigma
+  const pricePerQuintal = (size: string) => pricePerKg(size) * 100;
 
   const updateQty = (size: string, delta: number) => {
     setQuantities((prev) => ({
@@ -86,9 +120,9 @@ const SteelDetail = () => {
     }));
   };
 
-  // Price per bar ≈ price per ton × bar weight kg / 1000
+  // Price per bar = price per kg × bar weight
   const pricePerBar = (size: string) =>
-    Math.round((product.price * BAR_WEIGHT_KG[size]) / 1000);
+    Math.round(pricePerKg(size) * BAR_WEIGHT_KG[size]);
 
   // Totals — bars mode
   const totalBars = Object.values(quantities).reduce((a, b) => a + b, 0);
@@ -100,7 +134,7 @@ const SteelDetail = () => {
   // Totals — quintals mode
   const totalQuintals = +Object.values(quintals).reduce((a, b) => a + b, 0).toFixed(2);
   const totalPriceQuintals = Math.round(
-    STEEL_SIZES.reduce((sum, size) => sum + pricePerQuintal * (quintals[size] || 0), 0)
+    STEEL_SIZES.reduce((sum, size) => sum + pricePerQuintal(size) * (quintals[size] || 0), 0)
   );
 
   const handleAddBars = () => {
@@ -140,7 +174,7 @@ const SteelDetail = () => {
           ...product,
           id: `${product.id}-${size}`,
           name: `${product.name} — ${size}`,
-          price: Math.round(product.price / 1000), // price per kg
+          price: pricePerKg(size), // price per kg, size-specific
           unit: "kg",
           specs: { ...product.specs, Diameter: size, "Sold By": "Weight (quintals)" },
         };
@@ -195,10 +229,9 @@ const SteelDetail = () => {
               {isWeightBased && (
                 <div className="mt-4 rounded-lg border border-accent/30 bg-accent/5 p-3">
                   <p className="text-sm font-semibold text-foreground">
-                    ₹{pricePerQuintal.toLocaleString("en-IN")}{" "}
-                    <span className="text-xs font-normal text-muted-foreground">/ quintal</span>
-                    <span className="text-[11px] font-normal text-muted-foreground ml-2">
-                      (₹{product.price.toLocaleString("en-IN")} / ton)
+                    Price varies by size
+                    <span className="text-xs font-normal text-muted-foreground ml-2">
+                      ₹{Math.min(...Object.values(SIGMA_PRICE_PER_KG))}–₹{Math.max(...Object.values(SIGMA_PRICE_PER_KG))} / kg
                     </span>
                   </p>
                   <p className="text-[11px] text-muted-foreground mt-0.5">
@@ -241,12 +274,12 @@ const SteelDetail = () => {
                         <div>
                           <p className="text-lg font-bold text-foreground">{size}</p>
                           <p className="text-[11px] text-muted-foreground">
-                            ₹{pricePerQuintal.toLocaleString("en-IN")} / quintal
+                            ₹{pricePerKg(size)} / kg · ₹{pricePerQuintal(size).toLocaleString("en-IN")} / quintal
                           </p>
                         </div>
                         {active && (
                           <p className="text-sm font-semibold text-foreground text-right">
-                            ₹{lineTotal.toLocaleString("en-IN")}
+                            ₹{Math.round(pricePerQuintal(size) * q).toLocaleString("en-IN")}
                           </p>
                         )}
                       </div>
