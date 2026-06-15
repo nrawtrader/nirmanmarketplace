@@ -25,7 +25,7 @@ const Footer = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-5">
@@ -58,24 +58,22 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources */}
-          <div>
-            <h4 className="font-semibold mb-5 text-sm uppercase tracking-wider text-foreground/50">Resources</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li>Construction Guide</li>
-              <li>FAQ</li>
-              <li>Privacy Policy</li>
-              <li>Terms of Service</li>
-            </ul>
-          </div>
-
           {/* Contact */}
           <div>
             <h4 className="font-semibold mb-5 text-sm uppercase tracking-wider text-foreground/50">Contact</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-foreground" /> +91 98765 43210</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-foreground" /> hello@nirmanmarketplace.in</li>
-              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 text-foreground" /> Bangalore, India</li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-foreground shrink-0" />
+                <a href="tel:+919198391797" className="hover:text-foreground transition-colors">+91 91983 91797</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-foreground shrink-0" />
+                <a href="mailto:marketplacenirman@gmail.com" className="hover:text-foreground transition-colors">marketplacenirman@gmail.com</a>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 mt-0.5 text-foreground shrink-0" />
+                <span>Jankipuram Extension, Lucknow, Uttar Pradesh</span>
+              </li>
             </ul>
           </div>
         </div>
