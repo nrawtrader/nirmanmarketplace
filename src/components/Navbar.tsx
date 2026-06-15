@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Products", path: "/products" },
   { label: "House Designs", path: "/designs" },
   { label: "Calculator", path: "/calculator" },
+  { label: "Track Order", path: "/track-order" },
 ];
 
 const Navbar = () => {

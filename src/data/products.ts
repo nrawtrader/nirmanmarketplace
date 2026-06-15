@@ -7,7 +7,7 @@ import ultratechOpcImg from "@/assets/products/ultratech-opc.png";
 import rhlGoldImg from "@/assets/products/rhl-gold.png";
 import sigmaGriplockImg from "@/assets/products/sigma-griplock.png";
 
-export type ProductCategory = "cement" | "steel" | "sanitary";
+export type ProductCategory = "cement" | "steel" | "sanitary" | "paint" | "aggregate";
 
 export interface Product {
   id: string;
@@ -164,10 +164,118 @@ export const products: Product[] = [
     description: "One-piece western toilet with soft-close seat and dual flush system.",
     specs: { Type: "One-piece EWC", Material: "Ceramic", Flush: "Dual 3/6L", Color: "White" },
   },
+  {
+    id: "san-5",
+    name: "Parryware Floor Drain (Set of 4)",
+    brand: "Parryware",
+    category: "sanitary",
+    price: 850,
+    unit: "set of 4",
+    image: "/placeholder.svg",
+    description: "Stainless steel floor drains with anti-mosquito trap. Prevents foul smell and blockage.",
+    specs: { Type: "Floor Drain", Material: "SS 304", Size: "4 inch", "Anti-Odor": "Yes" },
+    tip: "Install drains before tiling for leak-proof results.",
+  },
+  {
+    id: "san-6",
+    name: "Astral CPVC Pipe 0.75 inch",
+    brand: "Astral",
+    category: "sanitary",
+    price: 320,
+    unit: "3m pipe",
+    image: "/placeholder.svg",
+    description: "CPVC pipe for hot & cold water supply in bathrooms and kitchens. ISI marked.",
+    specs: { Type: "CPVC", Diameter: "0.75 inch", Length: "3 meters", "Temp Rating": "Up to 93°C" },
+  },
+  {
+    id: "san-7",
+    name: "Hindware Water Closet P-Trap",
+    brand: "Hindware",
+    category: "sanitary",
+    price: 5800,
+    unit: "piece",
+    image: "/placeholder.svg",
+    description: "Elegant wall-hung toilet with concealed cistern support. Space-saving and easy to clean.",
+    specs: { Type: "Wall Hung EWC", Material: "Vitreous China", Flush: "Dual 4/6L", Warranty: "1 year" },
+  },
+  // Paint
+  {
+    id: "pnt-1",
+    name: "Asian Paints Tractor Emulsion",
+    brand: "Asian Paints",
+    category: "paint",
+    price: 3200,
+    unit: "20L bucket",
+    image: "/placeholder.svg",
+    description: "Premium interior emulsion paint with anti-bacterial protection and smooth finish.",
+    specs: { Type: "Interior Emulsion", Coverage: "140–160 sq ft/L", Finish: "Matt", Coats: "2 coats recommended" },
+    tip: "One 20L bucket covers approximately 2,800–3,200 sq ft with 2 coats.",
+  },
+  {
+    id: "pnt-2",
+    name: "Berger WeatherCoat Exterior Paint",
+    brand: "Berger",
+    category: "paint",
+    price: 4200,
+    unit: "20L bucket",
+    image: "/placeholder.svg",
+    description: "All-weather exterior paint with 10-year warranty. Protects walls from rain, sun, and algae.",
+    specs: { Type: "Exterior Acrylic", Coverage: "120–140 sq ft/L", Finish: "Sheen", Warranty: "10 years" },
+    tip: "Always apply a primer coat before WeatherCoat for best adhesion.",
+  },
+  {
+    id: "pnt-3",
+    name: "Dulux Weathershield Power+ Primer",
+    brand: "Dulux",
+    category: "paint",
+    price: 1100,
+    unit: "10L can",
+    image: "/placeholder.svg",
+    description: "Alkali-resistant exterior primer. Essential first coat before applying exterior paint.",
+    specs: { Type: "Exterior Primer", Coverage: "80–100 sq ft/L", Drying: "4 hours", Application: "Brush/Roller" },
+  },
+  // Aggregates / Sand / Bricks
+  {
+    id: "agg-1",
+    name: "M-Sand (Manufactured Sand)",
+    brand: "LocalMart",
+    category: "aggregate",
+    price: 1800,
+    unit: "ton",
+    image: "/placeholder.svg",
+    description: "High-quality manufactured sand for concrete mixing and plastering. Clean and graded.",
+    specs: { Type: "M-Sand", Grade: "Zone II", "Silt Content": "< 2%", Use: "Concrete & Plaster" },
+    tip: "M-Sand is a superior alternative to river sand — uniform size and cleaner.",
+  },
+  {
+    id: "agg-2",
+    name: "20mm Blue Metal Aggregate",
+    brand: "LocalMart",
+    category: "aggregate",
+    price: 2100,
+    unit: "ton",
+    image: "/placeholder.svg",
+    description: "Crushed granite aggregate for RCC work. Ideal for concrete mixing in columns, beams, slabs.",
+    specs: { Type: "Granite Aggregate", Size: "20mm", Shape: "Cubical", Use: "RCC & Foundations" },
+  },
+  {
+    id: "agg-3",
+    name: "Fly Ash Bricks (500 pcs)",
+    brand: "LocalMart",
+    category: "aggregate",
+    price: 5500,
+    unit: "500 bricks",
+    image: "/placeholder.svg",
+    description: "Eco-friendly fly ash bricks. Stronger, lighter, and more uniform than red clay bricks.",
+    specs: { Size: "9×4.5×3 inches", Strength: "7.5 N/mm²", "Water Absorption": "< 15%", "Thermal Insulation": "Better than red brick" },
+    tip: "Fly ash bricks reduce cement consumption by 30% due to better uniformity.",
+  },
 ];
 
 export const brands: Record<ProductCategory, string[]> = {
   cement: ["UltraTech", "ACC", "Bangur", "MP Birla"],
   steel: ["RHL Gold", "Sigma Griplock"],
-  sanitary: ["Hindware", "Astral", "Jaquar", "Cera"],
+  sanitary: ["Hindware", "Astral", "Jaquar", "Cera", "Parryware"],
+  paint: ["Asian Paints", "Berger", "Dulux"],
+  aggregate: ["LocalMart"],
 };
