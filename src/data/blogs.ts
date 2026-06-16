@@ -58,7 +58,7 @@ export const blogs: Blog[] = [
       </table>
 
       <h2>Our Recommendation</h2>
-      <p>For a typical house construction in J&K:</p>
+      <p>For a typical house construction in Lucknow:</p>
       <ul>
         <li>Use <strong>UltraTech OPC 53</strong> for all structural RCC work — foundation, columns, beams, roof slab</li>
         <li>Use <strong>ACC Gold or Bangur PPC</strong> for plastering, brickwork, and external finishing</li>
@@ -160,11 +160,11 @@ export const blogs: Blog[] = [
         </tbody>
       </table>
 
-      <h2>Which Grade for J&K Construction?</h2>
-      <p>Jammu & Kashmir falls in <strong>Seismic Zone IV and V</strong> — among the highest earthquake risk zones in India. Our strong recommendation:</p>
+      <h2>Which Grade for Lucknow Construction?</h2>
+      <p>Lucknow falls in <strong>Seismic Zone III</strong> — a moderate earthquake risk zone. Our strong recommendation:</p>
       <ul>
-        <li>Use <strong>Fe550D</strong> for all columns, beams, and foundations in multi-storey buildings</li>
-        <li>Use <strong>Fe500</strong> for single-storey residential construction in lower-risk areas</li>
+        <li>Use <strong>Fe550D</strong> for all columns, beams, and foundations in multi-storey buildings (G+2 and above)</li>
+        <li>Use <strong>Fe500</strong> for single-storey and double-storey residential construction — it's the most commonly used and cost-effective grade in Lucknow</li>
       </ul>
       <p>The "D" in Fe550D specifically indicates enhanced ductility — meaning the steel bends before it breaks, giving the structure time to withstand seismic shocks without sudden collapse.</p>
 
@@ -222,72 +222,72 @@ export const blogs: Blog[] = [
   },
   {
     id: "blog-5",
-    slug: "construction-cost-per-sqft-jammu-kashmir-2026",
-    title: "Construction Cost Per Sq Ft in Jammu & Kashmir (2026 Guide)",
-    excerpt: "Planning to build a house in J&K? Here's the complete 2026 breakdown of construction costs per square foot — material costs, labour rates, and total budget estimates.",
+    slug: "construction-cost-per-sqft-lucknow-2026",
+    title: "Construction Cost Per Sq Ft in Lucknow (2026 Guide)",
+    excerpt: "Planning to build a house in Lucknow? Here's the complete 2026 breakdown of construction costs per square foot — cement and steel prices, labour rates, and total budget estimates for Lucknow, Uttar Pradesh.",
     category: "guides",
     readTime: 8,
     publishedAt: "2026-05-28",
     author: "Nirman Team",
-    tags: ["construction cost", "Jammu Kashmir", "budget", "house construction", "2026"],
+    tags: ["construction cost", "Lucknow", "Uttar Pradesh", "budget", "house construction", "2026"],
     content: `
       <h2>Overview</h2>
-      <p>Building a house in Jammu & Kashmir in 2026 typically costs between <strong>₹1,800 to ₹2,800 per square foot</strong> depending on construction quality, location, and design. Here's a complete breakdown.</p>
+      <p>Building a house in Lucknow in 2026 typically costs between <strong>₹1,700 to ₹2,600 per square foot</strong> depending on construction quality, locality, and design. Areas like Jankipuram, Gomti Nagar, and Indira Nagar see slightly higher labour and transport costs than the outskirts. Here's a complete breakdown for the Lucknow market.</p>
 
       <h2>Cost Categories</h2>
 
       <h3>1. Material Costs (approx. 55–60% of total)</h3>
       <table>
-        <thead><tr><th>Material</th><th>Rate</th><th>Share of Cost</th></tr></thead>
+        <thead><tr><th>Material</th><th>Rate in Lucknow</th><th>Share of Cost</th></tr></thead>
         <tbody>
-          <tr><td>Cement (structural + finishing)</td><td>₹355–400/bag</td><td>12–15%</td></tr>
-          <tr><td>Steel (TMT bars)</td><td>₹62,000–65,000/ton</td><td>18–22%</td></tr>
-          <tr><td>Sand & Aggregate</td><td>₹1,800–2,100/ton</td><td>5–7%</td></tr>
-          <tr><td>Bricks / Blocks</td><td>₹5,500–7,000 per 500 pcs</td><td>6–8%</td></tr>
-          <tr><td>Paint & Finishing</td><td>₹3,200–4,200 per 20L</td><td>4–5%</td></tr>
-          <tr><td>Tiles & Flooring</td><td>₹40–150/sq ft</td><td>5–8%</td></tr>
-          <tr><td>Doors & Windows</td><td>₹8,000–25,000/unit</td><td>5–8%</td></tr>
+          <tr><td>Cement (UltraTech, ACC, Bangur)</td><td>₹340–390/bag</td><td>12–15%</td></tr>
+          <tr><td>Steel — RHL TMT bars</td><td>₹58,000–62,000/ton</td><td>18–22%</td></tr>
+          <tr><td>Steel — Sigma TMT bars</td><td>₹60,000–65,000/ton</td><td>18–22%</td></tr>
+          <tr><td>Sand & Aggregate</td><td>₹1,600–1,900/ton</td><td>5–7%</td></tr>
+          <tr><td>Bricks / Blocks</td><td>₹5,000–6,500 per 500 pcs</td><td>6–8%</td></tr>
+          <tr><td>Tiles & Flooring</td><td>₹35–140/sq ft</td><td>5–8%</td></tr>
+          <tr><td>Doors & Windows</td><td>₹7,500–22,000/unit</td><td>5–8%</td></tr>
         </tbody>
       </table>
 
-      <h3>2. Labour Costs (approx. 30–35% of total)</h3>
+      <h3>2. Labour Costs in Lucknow (approx. 30–35% of total)</h3>
       <table>
         <thead><tr><th>Work Type</th><th>Labour Rate</th></tr></thead>
         <tbody>
-          <tr><td>Mason (Raj Mistri)</td><td>₹700–1,000/day</td></tr>
-          <tr><td>Helper</td><td>₹400–600/day</td></tr>
-          <tr><td>Carpenter</td><td>₹800–1,200/day</td></tr>
-          <tr><td>Electrician</td><td>₹700–1,000/day</td></tr>
-          <tr><td>Plumber</td><td>₹700–900/day</td></tr>
-          <tr><td>Painter</td><td>₹600–900/day</td></tr>
+          <tr><td>Mason (Raj Mistri)</td><td>₹650–950/day</td></tr>
+          <tr><td>Helper</td><td>₹400–550/day</td></tr>
+          <tr><td>Carpenter</td><td>₹750–1,100/day</td></tr>
+          <tr><td>Electrician</td><td>₹650–950/day</td></tr>
+          <tr><td>Plumber</td><td>₹650–850/day</td></tr>
+          <tr><td>Painter</td><td>₹550–850/day</td></tr>
         </tbody>
       </table>
 
       <h3>3. Design & Approval Costs (5–10%)</h3>
       <ul>
         <li>Architect fee: 2–5% of construction cost</li>
-        <li>Structural engineer: ₹15,000–40,000 (one-time)</li>
-        <li>Building approval & plan sanction fees vary by district</li>
+        <li>Structural engineer: ₹12,000–35,000 (one-time)</li>
+        <li>Lucknow Development Authority (LDA) map approval and plan sanction fees vary by zone and plot size</li>
       </ul>
 
-      <h2>Total Estimated Budget</h2>
+      <h2>Total Estimated Budget for Lucknow</h2>
       <table>
         <thead><tr><th>House Size</th><th>Economy</th><th>Standard</th><th>Premium</th></tr></thead>
         <tbody>
-          <tr><td>800 sq ft</td><td>₹14.4L</td><td>₹18L</td><td>₹22L</td></tr>
-          <tr><td>1000 sq ft</td><td>₹18L</td><td>₹22.5L</td><td>₹28L</td></tr>
-          <tr><td>1200 sq ft</td><td>₹21.6L</td><td>₹27L</td><td>₹33.6L</td></tr>
-          <tr><td>1500 sq ft</td><td>₹27L</td><td>₹33.75L</td><td>₹42L</td></tr>
+          <tr><td>800 sq ft</td><td>₹13.6L</td><td>₹17L</td><td>₹20.8L</td></tr>
+          <tr><td>1000 sq ft</td><td>₹17L</td><td>₹21.25L</td><td>₹26L</td></tr>
+          <tr><td>1200 sq ft</td><td>₹20.4L</td><td>₹25.5L</td><td>₹31.2L</td></tr>
+          <tr><td>1500 sq ft</td><td>₹25.5L</td><td>₹31.9L</td><td>₹39L</td></tr>
         </tbody>
       </table>
 
-      <p><em>Note: These are estimates for 2026. Actual costs vary based on design complexity, site access, and local market rates.</em></p>
+      <p><em>Note: These are 2026 estimates for the Lucknow market. Actual costs vary based on design complexity, site access, and locality.</em></p>
 
       <h2>Tips to Reduce Construction Cost Without Compromising Quality</h2>
       <ul>
-        <li>Buy cement and steel in bulk — negotiate with your supplier for bulk discounts</li>
+        <li>Buy cement and steel in bulk from a local Lucknow supplier — negotiate for bulk discounts and doorstep delivery</li>
         <li>Don't compromise on structural materials (cement grade, steel grade) — save on finishes instead</li>
-        <li>Plan construction during non-peak season (avoid summer festival season when labour rates are high)</li>
+        <li>Plan construction outside peak wedding/festival season when labour rates in Lucknow tend to rise</li>
         <li>Use our <a href="/calculator">free Construction Calculator</a> to estimate material quantities accurately before buying</li>
       </ul>
     `,
