@@ -50,7 +50,7 @@ const Products = () => {
               Cement & Steel Products
             </h1>
             <p className="text-muted-foreground max-w-xl">
-              Sourced directly from trusted manufacturers. Every product comes with quality assurance and doorstep delivery across Jammu & Kashmir.
+              Sourced directly from trusted manufacturers. Every product comes with quality assurance and doorstep delivery across Lucknow.
             </p>
           </div>
 

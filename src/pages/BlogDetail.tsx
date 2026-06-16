@@ -113,7 +113,7 @@ const BlogDetail = () => {
           {/* CTA */}
           <div className="mt-10 rounded-2xl bg-accent/5 border border-accent/20 p-6 text-center">
             <p className="font-semibold text-foreground mb-1">Ready to order materials?</p>
-            <p className="text-sm text-muted-foreground mb-4">Get cement and steel delivered to your site across Jammu & Kashmir.</p>
+            <p className="text-sm text-muted-foreground mb-4">Get cement and steel delivered to your site across Lucknow.</p>
             <div className="flex gap-3 justify-center flex-wrap">
               <Link to="/products">
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Browse Products</Button>

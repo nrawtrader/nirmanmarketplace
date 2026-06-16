@@ -39,7 +39,7 @@ const Blogs = () => {
               Learn Before You Build
             </h1>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Expert guides on cement, steel, cost estimation, and construction tips — written for homebuilders in Jammu & Kashmir.
+              Expert guides on cement, steel, cost estimation, and construction tips — written for homebuilders in Lucknow.
             </p>
           </div>
 
