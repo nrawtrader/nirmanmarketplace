@@ -26,7 +26,7 @@ export const products: Product[] = [
   // ── CEMENT ──────────────────────────────────────────────
   {
     id: "cem-1",
-    name: "UltraTech Cement OPC 53 Grade",
+    name: "UltraTech Cement",
     brand: "UltraTech",
     category: "cement",
     price: 365,
