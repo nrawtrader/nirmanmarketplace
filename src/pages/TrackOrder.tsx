@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useOrders } from "@/contexts/OrderContext";
+import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Search, Package, Truck, CheckCircle2, Clock, MapPin, Phone, MessageCircle } from "lucide-react";
+import { Search, Package, Truck, CheckCircle2, Clock, MapPin, Phone, MessageCircle, User } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Order } from "@/contexts/OrderContext";
 
@@ -27,13 +28,14 @@ const TrackOrder = () => {
   const [orderId, setOrderId] = useState("");
   const [searched, setSearched] = useState(false);
   const [found, setFound] = useState<Order | null | undefined>(undefined);
-  const { getOrder } = useOrders();
+  const { getOrder, orders } = useOrders();
+  const { user, setIsSignInOpen } = useAuth();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!orderId.trim()) return;
-    const order = getOrder(orderId.trim().toUpperCase());
-    setFound(order);
+    const order = await getOrder(orderId.trim().toUpperCase());
+    setFound(order ?? null);
     setSearched(true);
   };
 
@@ -223,9 +225,48 @@ const TrackOrder = () => {
             </motion.div>
           )}
 
+          {/* My Orders — shown when signed in */}
+          {user && orders.length > 0 && (
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mt-8">
+              <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <User className="w-5 h-5 text-accent" />
+                My Orders
+              </h2>
+              <div className="space-y-3">
+                {orders.map((order) => (
+                  <button
+                    key={order.id}
+                    onClick={() => { setOrderId(order.id); setFound(order); setSearched(true); }}
+                    className="w-full text-left rounded-xl border border-border bg-card p-4 hover:border-accent/40 transition-colors"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-mono text-sm font-semibold text-foreground">{order.id}</span>
+                      <span className="text-xs bg-green-100 text-green-700 font-medium px-2.5 py-0.5 rounded-full capitalize">{order.status}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(order.placedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
+                      {" · "}₹{order.total.toLocaleString("en-IN")}
+                      {" · "}{order.items.length} item{order.items.length > 1 ? "s" : ""}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Sign-in prompt for guests */}
+          {!user && !searched && (
+            <div className="mt-6 rounded-xl border border-dashed border-border p-6 text-center">
+              <User className="w-8 h-8 text-muted-foreground/30 mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground mb-1">Sign in to see all your orders</p>
+              <p className="text-xs text-muted-foreground mb-3">View order history across all your devices</p>
+              <Button size="sm" variant="outline" onClick={() => setIsSignInOpen(true)}>Sign In</Button>
+            </div>
+          )}
+
           {/* Helpful tip */}
           {!searched && (
-            <div className="text-center p-8 text-sm text-muted-foreground">
+            <div className="text-center p-6 text-sm text-muted-foreground">
               <Clock className="w-8 h-8 mx-auto mb-3 opacity-30" />
               <p>Can't find your Order ID? Call us at <strong>+91 91983 91797</strong></p>
               <p className="mt-1">We're available Mon–Sat, 9 AM – 6 PM</p>
