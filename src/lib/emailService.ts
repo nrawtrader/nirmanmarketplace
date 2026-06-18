@@ -1,33 +1,9 @@
 import emailjs from "@emailjs/browser";
 import type { Order } from "@/contexts/OrderContext";
 
-// ─────────────────────────────────────────────────────────
-// HOW TO SET UP (takes 5 minutes):
-//
-// 1. Go to https://www.emailjs.com → sign up free
-// 2. Add Email Service → choose Gmail → connect your Gmail account
-// 3. Create Email Template → use the variables below
-// 4. Copy Service ID, Template ID, Public Key
-// 5. Create .env.local in project root with these values:
-//
-//    VITE_EMAILJS_SERVICE_ID=service_xxxxxxx
-//    VITE_EMAILJS_TEMPLATE_ID=template_xxxxxxx
-//    VITE_EMAILJS_PUBLIC_KEY=xxxxxxxxxxxxxxxxxxxx
-// ─────────────────────────────────────────────────────────
-
-// EmailJS template variables you need in your template:
-// {{to_email}}       → your business email
-// {{order_id}}       → e.g. NM-260615-1234
-// {{customer_name}}  → Ramesh Kumar
-// {{customer_phone}} → 9876543210
-// {{delivery_address}} → full address
-// {{items_list}}     → formatted list of items
-// {{order_total}}    → ₹12,500
-// {{payment_method}} → Cash on Delivery / UPI / Bank Transfer
-// {{estimated_date}} → 18 June 2026
-
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const ESTIMATE_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_ESTIMATE_TEMPLATE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 const OWNER_EMAIL = import.meta.env.VITE_OWNER_EMAIL || "nirmantradersjnk@gmail.com";
 
@@ -63,4 +39,34 @@ export const sendOrderNotification = async (order: Order): Promise<void> => {
   };
 
   await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+};
+
+interface EstimateRequestItem {
+  brand: string;
+  dimension: string;
+  quantity: number;
+  unit: string;
+  category: string;
+}
+
+export const sendEstimateNotification = async (data: {
+  name: string;
+  mobile: string;
+  items: EstimateRequestItem[];
+}): Promise<void> => {
+  if (!SERVICE_ID || !ESTIMATE_TEMPLATE_ID || !PUBLIC_KEY) {
+    console.warn("EmailJS estimate template not configured.");
+    return;
+  }
+
+  const itemsList = data.items
+    .map((i) => `• ${i.brand}${i.dimension ? ` (${i.dimension})` : ""} — ${i.quantity} ${i.unit}`)
+    .join("\n");
+
+  await emailjs.send(SERVICE_ID, ESTIMATE_TEMPLATE_ID, {
+    to_email: OWNER_EMAIL,
+    customer_name: data.name,
+    customer_phone: data.mobile,
+    items_list: itemsList,
+  }, PUBLIC_KEY);
 };
