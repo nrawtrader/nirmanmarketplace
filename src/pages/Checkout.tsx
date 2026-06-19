@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useOrders, Order } from "@/contexts/OrderContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { sendOrderNotification } from "@/lib/emailService";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -38,6 +39,7 @@ const Field = ({
 const Checkout = () => {
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const { addOrder } = useOrders();
+  const { user, saveAddress } = useAuth();
   const [placedOrder, setPlacedOrder] = useState<Order | null>(null);
   const [form, setForm] = useState({
     name: "", phone: "", email: "", address: "", city: "",
@@ -45,6 +47,23 @@ const Checkout = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  // Pre-fill from saved address when user is signed in
+  useEffect(() => {
+    if (user) {
+      setForm((f) => ({
+        ...f,
+        name: user.name || f.name,
+        phone: user.phone || f.phone,
+        ...(user.savedAddress ? {
+          address: user.savedAddress.address,
+          city: user.savedAddress.city,
+          state: user.savedAddress.state,
+          pincode: user.savedAddress.pincode,
+        } : {}),
+      }));
+    }
+  }, [user]);
 
   const updateField = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -74,11 +93,19 @@ const Checkout = () => {
     }
     setSubmitting(true);
     setTimeout(async () => {
-      const order = addOrder({ items, total: totalPrice, form });
+      const order = await addOrder({ items, total: totalPrice, form });
       clearCart();
       setPlacedOrder(order);
       setSubmitting(false);
-      // Send email notification to owner (silently — don't block the success screen)
+      // Save address to Firestore profile for next time
+      if (user) {
+        saveAddress({
+          name: form.name, phone: form.phone,
+          address: form.address, city: form.city,
+          state: form.state, pincode: form.pincode,
+        }).catch(() => {});
+      }
+      // Send email notification to owner
       try { await sendOrderNotification(order); } catch { /* email failed, order still placed */ }
     }, 1200);
   };

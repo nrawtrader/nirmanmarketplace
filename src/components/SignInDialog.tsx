@@ -10,23 +10,29 @@ import { toast } from "sonner";
 
 type Step = "phone" | "otp" | "name";
 
-const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
-
 const RESEND_SECONDS = 30;
 
 const SignInDialog = () => {
-  const { isSignInOpen, setIsSignInOpen, signIn } = useAuth();
+  const { isSignInOpen, setIsSignInOpen, sendOtp, verifyOtp, saveName, authLoading, authError, user } = useAuth();
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [name, setName] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const [otpError, setOtpError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // When user signs in via Firebase, move to name step if no name yet
+  useEffect(() => {
+    if (user && isSignInOpen) {
+      if (!user.name) {
+        setStep("name");
+      } else {
+        setIsSignInOpen(false);
+      }
+    }
+  }, [user, isSignInOpen]);
 
   useEffect(() => {
     if (!isSignInOpen) {
@@ -36,7 +42,6 @@ const SignInDialog = () => {
         setOtp(["", "", "", "", "", ""]);
         setName("");
         setPhoneError("");
-        setOtpError("");
         setResendTimer(0);
         if (timerRef.current) clearInterval(timerRef.current);
       }, 300);
@@ -53,33 +58,19 @@ const SignInDialog = () => {
     }, 1000);
   };
 
-  const sendOtp = (ph: string) => {
-    const code = generateOtp();
-    setGeneratedOtp(code);
-    // In production: call SMS API here (MSG91, Twilio, etc.)
-    // For demo: show OTP in toast
-    toast.info(`OTP for +91 ${ph}: ${code}`, {
-      description: "In production this would be sent via SMS",
-      duration: 30000,
-    });
-    return code;
-  };
-
-  const handlePhoneSubmit = (e: React.FormEvent) => {
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^[6-9]\d{9}$/.test(phone)) {
       setPhoneError("Enter a valid 10-digit Indian mobile number");
       return;
     }
     setPhoneError("");
-    setLoading(true);
-    setTimeout(() => {
-      sendOtp(phone);
-      setLoading(false);
+    await sendOtp(phone);
+    if (!authError) {
       setStep("otp");
       startResendTimer();
       setTimeout(() => otpRefs.current[0]?.focus(), 100);
-    }, 800);
+    }
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -87,10 +78,9 @@ const SignInDialog = () => {
     const newOtp = [...otp];
     newOtp[index] = value.slice(-1);
     setOtp(newOtp);
-    setOtpError("");
     if (value && index < 5) otpRefs.current[index + 1]?.focus();
     if (newOtp.every(d => d) && newOtp.join("").length === 6) {
-      verifyOtp(newOtp.join(""));
+      handleVerify(newOtp.join(""));
     }
   };
 
@@ -106,38 +96,30 @@ const SignInDialog = () => {
       const newOtp = pasted.split("");
       setOtp(newOtp);
       otpRefs.current[5]?.focus();
-      setTimeout(() => verifyOtp(pasted), 100);
+      setTimeout(() => handleVerify(pasted), 100);
     }
   };
 
-  const verifyOtp = (entered: string) => {
-    setLoading(true);
-    setTimeout(() => {
-      if (entered === generatedOtp) {
-        setLoading(false);
-        setStep("name");
-      } else {
-        setOtpError("Incorrect OTP. Please try again.");
-        setOtp(["", "", "", "", "", ""]);
-        otpRefs.current[0]?.focus();
-        setLoading(false);
-      }
-    }, 600);
+  const handleVerify = async (code: string) => {
+    await verifyOtp(code);
+    // AuthContext will update user — useEffect above handles next step
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (resendTimer > 0) return;
     setOtp(["", "", "", "", "", ""]);
-    setOtpError("");
-    sendOtp(phone);
-    startResendTimer();
-    setTimeout(() => otpRefs.current[0]?.focus(), 100);
+    await sendOtp(phone);
+    if (!authError) {
+      startResendTimer();
+      setTimeout(() => otpRefs.current[0]?.focus(), 100);
+    }
   };
 
-  const handleNameSubmit = (e: React.FormEvent) => {
+  const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    signIn(phone, name.trim() || undefined);
+    await saveName(name.trim());
     toast.success("Signed in successfully!", { description: `Welcome${name.trim() ? `, ${name.trim()}` : ""}!` });
+    setIsSignInOpen(false);
   };
 
   return (
@@ -153,7 +135,6 @@ const SignInDialog = () => {
         </DialogHeader>
 
         <AnimatePresence mode="wait">
-          {/* Step 1: Phone */}
           {step === "phone" && (
             <motion.div key="phone" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
               <form onSubmit={handlePhoneSubmit} className="space-y-4 mt-2">
@@ -174,22 +155,21 @@ const SignInDialog = () => {
                       autoFocus
                     />
                   </div>
-                  {phoneError && <p className="text-xs text-destructive mt-1">{phoneError}</p>}
+                  {(phoneError || authError) && (
+                    <p className="text-xs text-destructive mt-1">{phoneError || authError}</p>
+                  )}
                 </div>
-
                 <div className="flex items-center gap-2 text-xs text-muted-foreground bg-secondary/50 rounded-lg p-3">
                   <Shield className="w-3.5 h-3.5 shrink-0 text-accent" />
                   Your number is used only for order updates. We never share it.
                 </div>
-
-                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={loading}>
-                  {loading ? "Sending OTP..." : "Send OTP"}
+                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={authLoading}>
+                  {authLoading ? "Sending OTP..." : "Send OTP"}
                 </Button>
               </form>
             </motion.div>
           )}
 
-          {/* Step 2: OTP */}
           {step === "otp" && (
             <motion.div key="otp" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
               <div className="space-y-4 mt-2">
@@ -199,8 +179,6 @@ const SignInDialog = () => {
                 <p className="text-sm text-muted-foreground">
                   OTP sent to <strong className="text-foreground">+91 {phone}</strong>. Enter the 6-digit code below.
                 </p>
-
-                {/* OTP boxes */}
                 <div className="flex gap-2 justify-center" onPaste={handleOtpPaste}>
                   {otp.map((digit, i) => (
                     <input
@@ -214,44 +192,35 @@ const SignInDialog = () => {
                       onKeyDown={(e) => handleOtpKeyDown(i, e)}
                       className={`w-11 h-12 text-center text-lg font-bold rounded-lg border-2 bg-background outline-none transition-colors
                         ${digit ? "border-accent" : "border-border"}
-                        ${otpError ? "border-destructive" : ""}
+                        ${authError ? "border-destructive" : ""}
                         focus:border-accent`}
                     />
                   ))}
                 </div>
-
-                {otpError && (
-                  <p className="text-xs text-destructive text-center">{otpError}</p>
-                )}
-
-                {loading && (
-                  <p className="text-xs text-muted-foreground text-center">Verifying...</p>
-                )}
-
+                {authError && <p className="text-xs text-destructive text-center">{authError}</p>}
+                {authLoading && <p className="text-xs text-muted-foreground text-center">Verifying...</p>}
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>Didn't receive OTP?</span>
                   <button
                     onClick={handleResend}
-                    disabled={resendTimer > 0}
+                    disabled={resendTimer > 0 || authLoading}
                     className={`flex items-center gap-1 font-medium transition-colors ${resendTimer > 0 ? "text-muted-foreground" : "text-accent hover:underline"}`}
                   >
                     <RefreshCw className="w-3 h-3" />
                     {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend OTP"}
                   </button>
                 </div>
-
                 <Button
-                  onClick={() => verifyOtp(otp.join(""))}
+                  onClick={() => handleVerify(otp.join(""))}
                   className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                  disabled={otp.join("").length < 6 || loading}
+                  disabled={otp.join("").length < 6 || authLoading}
                 >
-                  {loading ? "Verifying..." : "Verify OTP"}
+                  {authLoading ? "Verifying..." : "Verify OTP"}
                 </Button>
               </div>
             </motion.div>
           )}
 
-          {/* Step 3: Name (optional) */}
           {step === "name" && (
             <motion.div key="name" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
               <form onSubmit={handleNameSubmit} className="space-y-4 mt-2">
@@ -261,7 +230,7 @@ const SignInDialog = () => {
                   </div>
                 </div>
                 <p className="text-center text-sm text-muted-foreground">
-                  <strong className="text-foreground">+91 {phone}</strong> verified!
+                  <strong className="text-foreground">+91 {phone || user?.phone}</strong> verified!
                 </p>
                 <div>
                   <Label htmlFor="signin-name" className="text-sm font-medium">Your Name <span className="text-muted-foreground font-normal">(optional)</span></Label>
