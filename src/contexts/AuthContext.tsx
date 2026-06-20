@@ -54,6 +54,7 @@ const isConfigured = () =>
   );
 
 const loadUserProfile = async (fb: FBUser): Promise<AuthUser> => {
+  if (!db) return { uid: fb.uid, phone: fb.phoneNumber?.replace("+91", "") ?? "" };
   const ref = doc(db, "users", fb.uid);
   const snap = await getDoc(ref);
   const data = snap.exists() ? snap.data() : {};
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!configured) return;
-    const unsub = onAuthStateChanged(auth, async (fb) => {
+    const unsub = onAuthStateChanged(auth!, async (fb) => {
       if (fb) {
         const profile = await loadUserProfile(fb);
         setUser(profile);
@@ -90,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const getRecaptcha = () => {
     if (recaptchaRef.current) return recaptchaRef.current;
-    const verifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+    const verifier = new RecaptchaVerifier(auth!, "recaptcha-container", {
       size: "invisible",
     });
     recaptchaRef.current = verifier;
@@ -103,7 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthError("");
     try {
       const verifier = getRecaptcha();
-      const result = await signInWithPhoneNumber(auth, `+91${phone}`, verifier);
+      const result = await signInWithPhoneNumber(auth!, `+91${phone}`, verifier);
       confirmationRef.current = result;
       setOtpSent(true);
     } catch (err: unknown) {
@@ -131,21 +132,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const saveName = async (name: string) => {
-    if (!auth.currentUser) return;
+    if (!auth?.currentUser || !db) return;
     const ref = doc(db, "users", auth.currentUser.uid);
     await setDoc(ref, { name }, { merge: true });
     setUser((u) => u ? { ...u, name } : u);
   };
 
   const saveAddress = async (address: SavedAddress) => {
-    if (!auth.currentUser) return;
+    if (!auth?.currentUser || !db) return;
     const ref = doc(db, "users", auth.currentUser.uid);
     await setDoc(ref, { savedAddress: address }, { merge: true });
     setUser((u) => u ? { ...u, savedAddress: address } : u);
   };
 
   const signOut = async () => {
-    await fbSignOut(auth);
+    if (auth) await fbSignOut(auth);
     setUser(null);
   };
 

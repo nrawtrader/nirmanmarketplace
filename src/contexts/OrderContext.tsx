@@ -75,13 +75,13 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 
   // When user signs in, load their orders from Firestore
   useEffect(() => {
-    if (!configured || !user) {
+    if (!configured || !user || !db) {
       setOrders(loadLocalOrders());
       return;
     }
     const fetchOrders = async () => {
       try {
-        const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+        const q = query(collection(db!, "orders"), where("userId", "==", user.uid));
         const snap = await getDocs(q);
         const firestoreOrders = snap.docs.map((d) => d.data() as Order);
         // merge with local orders (in case they placed an order before signing in)
@@ -116,9 +116,9 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     });
 
     // Also save to Firestore if configured and user is signed in
-    if (configured && user) {
+    if (configured && user && db) {
       try {
-        await addDoc(collection(db, "orders"), order);
+        await addDoc(collection(db!, "orders"), order);
       } catch {
         // Firestore save failed — order is still in localStorage
       }
@@ -133,9 +133,9 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     if (inMemory) return inMemory;
 
     // If Firebase configured, search Firestore
-    if (configured) {
+    if (configured && db) {
       try {
-        const q = query(collection(db, "orders"), where("id", "==", id));
+        const q = query(collection(db!, "orders"), where("id", "==", id));
         const snap = await getDocs(q);
         if (!snap.empty) return snap.docs[0].data() as Order;
       } catch { /* ignore */ }
