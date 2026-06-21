@@ -22,6 +22,7 @@ const TrackOrder = lazy(() => import("./pages/TrackOrder"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Admin = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
                   <Route path="/track-order" element={<TrackOrder />} />
                   <Route path="/blog" element={<Blogs />} />
                   <Route path="/blog/:slug" element={<BlogDetail />} />
+                  <Route path="/admin" element={<Admin />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
