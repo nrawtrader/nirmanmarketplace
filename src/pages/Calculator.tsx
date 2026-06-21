@@ -19,6 +19,7 @@ import {
   QualityGrade,
   STATES,
   RESOURCES,
+  RESOURCE_COLORS,
   calculateFullEstimate,
   FullEstimate,
   formatINR,
@@ -83,7 +84,7 @@ const Calculator = () => {
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 font-display"
           >
-            Cement, Steel & Sanitary Cost Estimator
+            Full House Construction Cost Estimator
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -91,7 +92,7 @@ const Calculator = () => {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground max-w-2xl mx-auto text-lg"
           >
-            Get accurate material estimates for your construction project
+            Cement, steel, bricks, sand, gitti, binding wire — all materials with Lucknow 2026 market rates
           </motion.p>
         </div>
 
@@ -232,7 +233,7 @@ const Calculator = () => {
                               labelLine
                             >
                               {result.resources.map((r, i) => (
-                                <Cell key={r.id} fill={["hsl(48, 96%, 53%)", "hsl(225, 73%, 50%)", "hsl(142, 71%, 35%)"][i]} />
+                                <Cell key={r.id} fill={RESOURCE_COLORS[i % RESOURCE_COLORS.length]} />
                               ))}
                             </Pie>
                             <Tooltip
@@ -329,6 +330,41 @@ const Calculator = () => {
                         </div>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+
+                {/* Current Rates Reference */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-xl font-bold text-center">
+                      Current Lucknow Market Rates (June 2026)
+                    </CardTitle>
+                    <p className="text-center text-sm text-muted-foreground">
+                      Prices sourced from actual sales data — updated regularly
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {[
+                        { label: "UltraTech Cement", rate: "₹370 / bag", sub: "50 kg bag" },
+                        { label: "RHL Gold TMT (12mm)", rate: "₹65 / kg", sub: "Fe500 grade" },
+                        { label: "Bricks (Eent)", rate: "₹8–9 / piece", sub: "Machine made" },
+                        { label: "Stone Chips (Gitti)", rate: "₹65 / cft", sub: "20mm aggregate" },
+                        { label: "River Sand (Maurang)", rate: "₹65 / cft", sub: "Washed coarse" },
+                        { label: "Fine Sand (Balu)", rate: "₹300 / trolley", sub: "~50–60 cft" },
+                        { label: "Binding Wire (Taar)", rate: "₹100 / kg", sub: "GI wire" },
+                        { label: "Dr Fixit / URP", rate: "₹150–180 / L", sub: "Waterproofing" },
+                      ].map((item) => (
+                        <div key={item.label} className="rounded-xl border border-border bg-card p-3 text-center">
+                          <p className="text-xs text-muted-foreground mb-1">{item.label}</p>
+                          <p className="font-bold text-foreground text-sm">{item.rate}</p>
+                          <p className="text-[11px] text-muted-foreground mt-0.5">{item.sub}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground text-center mt-4">
+                      * Rates may vary ±5% based on quantity and delivery location within Lucknow.
+                    </p>
                   </CardContent>
                 </Card>
 
