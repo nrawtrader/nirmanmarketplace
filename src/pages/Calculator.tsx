@@ -351,7 +351,7 @@ const Calculator = () => {
                         { label: "Bricks (Eent)", rate: "₹8–9 / piece", sub: "Machine made" },
                         { label: "Stone Chips (Gitti)", rate: "₹65 / cft", sub: "20mm aggregate" },
                         { label: "River Sand (Maurang)", rate: "₹65 / cft", sub: "Washed coarse" },
-                        { label: "Fine Sand (Balu)", rate: "₹300 / trolley", sub: "~50–60 cft" },
+                        { label: "Fine Sand (Balu)", rate: "₹30 / cft", sub: "Washed fine sand" },
                         { label: "Binding Wire (Taar)", rate: "₹100 / kg", sub: "GI wire" },
                         { label: "Dr Fixit / URP", rate: "₹150–180 / L", sub: "Waterproofing" },
                       ].map((item) => (

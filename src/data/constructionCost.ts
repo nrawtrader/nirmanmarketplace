@@ -150,9 +150,9 @@ export const RESOURCES: ResourceItem[] = [
     // Finish plaster + flooring bed: ~0.35 cft/sqft
     quantityPerSqft: 0.35,
     grades: {
-      basic:   { label: "Local Fine Sand",         ratePerUnit: 4 },
-      medium:  { label: "Washed Fine Sand (Balu)", ratePerUnit: 6 },
-      premium: { label: "M-Sand (Manufactured)",   ratePerUnit: 9 },
+      basic:   { label: "Local Fine Sand",         ratePerUnit: 25 },
+      medium:  { label: "Washed Fine Sand (Balu)", ratePerUnit: 30 },
+      premium: { label: "M-Sand (Manufactured)",   ratePerUnit: 38 },
     },
   },
   {
