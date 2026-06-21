@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import type { Order } from "@/contexts/OrderContext";
 
 const STATUS_STEPS = [
+  { key: "pending", label: "Order Placed", desc: "Waiting for confirmation", icon: Clock },
   { key: "confirmed", label: "Order Confirmed", desc: "We received your order", icon: CheckCircle2 },
   { key: "processing", label: "Processing", desc: "Materials being packed", icon: Package },
   { key: "dispatched", label: "Dispatched", desc: "On the way to you", icon: Truck },
@@ -18,10 +19,11 @@ const STATUS_STEPS = [
 ] as const;
 
 const STATUS_INDEX: Record<Order["status"], number> = {
-  confirmed: 0,
-  processing: 1,
-  dispatched: 2,
-  delivered: 3,
+  pending: 0,
+  confirmed: 1,
+  processing: 2,
+  dispatched: 3,
+  delivered: 4,
 };
 
 const TrackOrder = () => {

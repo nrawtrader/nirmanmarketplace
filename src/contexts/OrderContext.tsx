@@ -22,9 +22,9 @@ export interface Order {
     paymentMethod: string;
   };
   placedAt: string;
-  status: "confirmed" | "processing" | "dispatched" | "delivered";
+  status: "pending" | "confirmed" | "processing" | "dispatched" | "delivered";
   estimatedDelivery: string;
-  userId?: string; // firebase uid
+  userId?: string;
 }
 
 interface OrderContextType {
@@ -103,7 +103,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
       ...data,
       id: generateOrderId(),
       placedAt: new Date().toISOString(),
-      status: "confirmed",
+      status: "pending",
       estimatedDelivery: getEstimatedDelivery(),
       userId: user?.uid,
     };

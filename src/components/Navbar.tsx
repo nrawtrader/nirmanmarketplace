@@ -94,7 +94,7 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <User className="w-4 h-4" />
-                  {user.name || `+91 ${user.phone}`}
+                  {user.name || user.email}
                 </span>
                 <Button variant="ghost" size="sm" onClick={signOut} className="gap-1.5 text-muted-foreground hover:text-foreground">
                   <LogOut className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ const Navbar = () => {
                   <div className="flex items-center justify-between px-1">
                     <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                       <User className="w-4 h-4" />
-                      {user.name || `+91 ${user.phone}`}
+                      {user.name || user.email}
                     </span>
                     <Button variant="ghost" size="sm" onClick={() => { signOut(); setOpen(false); }} className="gap-1.5 text-muted-foreground">
                       <LogOut className="w-3.5 h-3.5" />

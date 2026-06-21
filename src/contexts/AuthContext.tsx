@@ -2,8 +2,8 @@ import {
   createContext, useContext, useState, useEffect, useRef, ReactNode,
 } from "react";
 import {
-  RecaptchaVerifier, signInWithPhoneNumber, signOut as fbSignOut,
-  onAuthStateChanged, ConfirmationResult, User as FBUser,
+  sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink,
+  signOut as fbSignOut, onAuthStateChanged, User as FBUser,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
@@ -19,7 +19,7 @@ export interface SavedAddress {
 
 export interface AuthUser {
   uid: string;
-  phone: string;
+  email: string;
   name?: string;
   savedAddress?: SavedAddress;
 }
@@ -27,16 +27,15 @@ export interface AuthUser {
 interface AuthContextType {
   user: AuthUser | null;
   firebaseConfigured: boolean;
-  sendOtp: (phone: string) => Promise<void>;
-  verifyOtp: (code: string) => Promise<void>;
+  sendEmailLink: (email: string) => Promise<void>;
+  signOut: () => Promise<void>;
   saveName: (name: string) => Promise<void>;
   saveAddress: (address: SavedAddress) => Promise<void>;
-  signOut: () => Promise<void>;
   isSignInOpen: boolean;
   setIsSignInOpen: (open: boolean) => void;
-  otpSent: boolean;
   authLoading: boolean;
   authError: string;
+  emailLinkSent: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -48,40 +47,57 @@ export const useAuth = () => {
 };
 
 const isConfigured = () =>
-  !!(
-    import.meta.env.VITE_FIREBASE_API_KEY &&
-    import.meta.env.VITE_FIREBASE_PROJECT_ID
-  );
+  !!(import.meta.env.VITE_FIREBASE_API_KEY && import.meta.env.VITE_FIREBASE_PROJECT_ID);
 
 const loadUserProfile = async (fb: FBUser): Promise<AuthUser> => {
-  if (!db) return { uid: fb.uid, phone: fb.phoneNumber?.replace("+91", "") ?? "" };
+  if (!db) return { uid: fb.uid, email: fb.email ?? "" };
   const ref = doc(db, "users", fb.uid);
   const snap = await getDoc(ref);
   const data = snap.exists() ? snap.data() : {};
   return {
     uid: fb.uid,
-    phone: fb.phoneNumber?.replace("+91", "") ?? "",
+    email: fb.email ?? "",
     name: data.name,
     savedAddress: data.savedAddress,
   };
 };
 
+const SITE_URL = "https://nirmanmarketplace.co.in";
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
-  const confirmationRef = useRef<ConfirmationResult | null>(null);
-  const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
+  const [emailLinkSent, setEmailLinkSent] = useState(false);
   const configured = isConfigured();
 
+  // Handle email link sign-in when user lands back on site after clicking link
   useEffect(() => {
-    if (!configured) return;
-    const unsub = onAuthStateChanged(auth!, async (fb) => {
+    if (!configured || !auth) return;
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      const email = localStorage.getItem("nirman-signin-email");
+      if (email) {
+        setAuthLoading(true);
+        signInWithEmailLink(auth, email, window.location.href)
+          .then(() => {
+            localStorage.removeItem("nirman-signin-email");
+            // Clean up the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          })
+          .catch(() => setAuthError("Sign-in link expired or invalid. Please try again."))
+          .finally(() => setAuthLoading(false));
+      }
+    }
+  }, [configured]);
+
+  useEffect(() => {
+    if (!configured || !auth) return;
+    const unsub = onAuthStateChanged(auth, async (fb) => {
       if (fb) {
         const profile = await loadUserProfile(fb);
         setUser(profile);
+        setIsSignInOpen(false);
       } else {
         setUser(null);
       }
@@ -89,43 +105,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return unsub;
   }, [configured]);
 
-  const getRecaptcha = () => {
-    if (recaptchaRef.current) return recaptchaRef.current;
-    const verifier = new RecaptchaVerifier(auth!, "recaptcha-container", {
-      size: "invisible",
-    });
-    recaptchaRef.current = verifier;
-    return verifier;
-  };
-
-  const sendOtp = async (phone: string) => {
-    if (!configured) return;
+  const sendEmailLink = async (email: string) => {
+    if (!configured || !auth) return;
     setAuthLoading(true);
     setAuthError("");
     try {
-      const verifier = getRecaptcha();
-      const result = await signInWithPhoneNumber(auth!, `+91${phone}`, verifier);
-      confirmationRef.current = result;
-      setOtpSent(true);
-    } catch (err: unknown) {
-      recaptchaRef.current = null;
-      const msg = err instanceof Error ? err.message : "Failed to send OTP";
-      setAuthError(msg.includes("TOO_SHORT") ? "Enter a valid 10-digit number" : "Failed to send OTP. Try again.");
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const verifyOtp = async (code: string) => {
-    if (!confirmationRef.current) return;
-    setAuthLoading(true);
-    setAuthError("");
-    try {
-      await confirmationRef.current.confirm(code);
-      setOtpSent(false);
-      setIsSignInOpen(false);
+      await sendSignInLinkToEmail(auth, email, {
+        url: SITE_URL,
+        handleCodeInApp: true,
+      });
+      localStorage.setItem("nirman-signin-email", email);
+      setEmailLinkSent(true);
     } catch {
-      setAuthError("Incorrect OTP. Please try again.");
+      setAuthError("Failed to send sign-in link. Check your email and try again.");
     } finally {
       setAuthLoading(false);
     }
@@ -133,15 +125,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const saveName = async (name: string) => {
     if (!auth?.currentUser || !db) return;
-    const ref = doc(db, "users", auth.currentUser.uid);
-    await setDoc(ref, { name }, { merge: true });
+    await setDoc(doc(db, "users", auth.currentUser.uid), { name }, { merge: true });
     setUser((u) => u ? { ...u, name } : u);
   };
 
   const saveAddress = async (address: SavedAddress) => {
     if (!auth?.currentUser || !db) return;
-    const ref = doc(db, "users", auth.currentUser.uid);
-    await setDoc(ref, { savedAddress: address }, { merge: true });
+    await setDoc(doc(db, "users", auth.currentUser.uid), { savedAddress: address }, { merge: true });
     setUser((u) => u ? { ...u, savedAddress: address } : u);
   };
 
@@ -153,12 +143,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{
       user, firebaseConfigured: configured,
-      sendOtp, verifyOtp, saveName, saveAddress, signOut,
+      sendEmailLink, signOut, saveName, saveAddress,
       isSignInOpen, setIsSignInOpen,
-      otpSent, authLoading, authError,
+      authLoading, authError, emailLinkSent,
     }}>
-      {/* invisible recaptcha mount point */}
-      <div id="recaptcha-container" />
       {children}
     </AuthContext.Provider>
   );
