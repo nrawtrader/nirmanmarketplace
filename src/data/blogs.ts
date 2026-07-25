@@ -351,7 +351,6 @@ export const blogs: Blog[] = [
       <p>Use our <a href="/calculator">Steel Calculator</a> for a precise estimate based on your house dimensions.</p>
     `,
   },
-];
 {
     id: "blog-7",
     slug: "pre-construction-preparation-checklist-customers",
