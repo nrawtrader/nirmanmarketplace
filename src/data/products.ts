@@ -41,7 +41,7 @@ export const products: Product[] = [
     name: "UltraTech Weather Plus",
     brand: "UltraTech",
     category: "cement",
-    price: 385
+    price: 385,
     unit: "bag (50kg)",
     image: ultratechWeatherImg,
     description: "India's No.1 Cement with enhanced weather resistance. Ideal for exterior plastering and areas exposed to rain and humidity.",
