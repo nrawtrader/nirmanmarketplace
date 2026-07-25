@@ -352,7 +352,78 @@ export const blogs: Blog[] = [
     `,
   },
 ];
-
+{
+    id: "blog-7",
+    slug: "pre-construction-preparation-checklist-customers",
+    title: "Pre-Construction Checklist: What Customers Should Prepare Before Work Begins",
+    excerpt: "Planning to start construction? Here's what customers should prepare in advance — from documents to material storage — so your schedule and material supply don't get disrupted, especially during Lucknow's rainy season.",
+    category: "construction-tips",
+    readTime: 6,
+    publishedAt: "2026-07-25",
+    author: "Nirman Team",
+    tags: ["construction tips", "site preparation", "monsoon construction", "material planning"],
+    content: `
+      <h2>Why Pre-Construction Preparation Matters</h2>
+      <p>Most construction delays don't happen because of the contractor — they happen because of gaps in preparation before the work even starts. A missing approval, a late material order, or an unprotected site during the rains can quietly add weeks to your project.</p>
+      <p>Lucknow is currently in its monsoon season, with frequent rain and high humidity. This is exactly the kind of weather that exposes planning gaps — cement bags left uncovered, waterlogged excavation pits, or steel starting to rust in open storage. Here's what customers should prepare in advance.</p>
+      <h2>1. Finalize Design and Material Specifications</h2>
+      <p>Changing your mind mid-construction — a different tile, a shifted wall, an upgraded cement grade — means re-ordering material, idle labor, and possible rework.</p>
+      <ul>
+        <li>Lock in the floor plan and elevation design before the first foundation stone is laid</li>
+        <li>Finalize a material specification sheet — cement type (OPC or PPC), steel grade, brick type, tile and paint brand</li>
+        <li>Keep a small contingency budget for minor changes, but avoid structural changes once work starts</li>
+      </ul>
+      <h2>2. Complete Legal and Documentation Work Early</h2>
+      <p>Nothing stalls a project faster than a stop-work notice. Before construction begins, keep the following ready:</p>
+      <ul>
+        <li>Approved building plan / map sanction from the local development authority (LDA in Lucknow)</li>
+        <li>Land ownership documents and mutation papers</li>
+        <li>NOC from relevant departments if the plot is near a road, park, or utility line</li>
+        <li>Structural stability certificate for larger buildings, if applicable</li>
+      </ul>
+      <p>Start this paperwork at least 4–6 weeks before the planned start date, since municipal approvals rarely move as fast as expected.</p>
+      <h2>3. Plan Material Ordering Around Lead Times</h2>
+      <p>Cement, steel, sand, and bricks all have different supplier lead times. Ordering everything "just in time" leaves no buffer if a supplier is delayed — which is common during monsoon when transport and quarrying slow down.</p>
+      <ul>
+        <li>Order cement and steel in phases matching your construction stages, not all at once</li>
+        <li>Confirm sand and aggregate availability in advance, since river sand mining is often restricted during the rains</li>
+        <li>Keep a buffer stock of 5–7 days' critical material during monsoon months</li>
+      </ul>
+      <h2>4. Prepare the Site for Monsoon Conditions</h2>
+      <p>Lucknow's current weather — frequent rain, high humidity, and warm temperatures — makes site readiness critical. An unprepared site can lose several working days to waterlogging alone.</p>
+      <table>
+        <thead><tr><th>Preparation</th><th>Why It Matters</th></tr></thead>
+        <tbody>
+          <tr><td>Site drainage / temporary channels</td><td>Prevents water pooling around foundation and excavation pits</td></tr>
+          <tr><td>Covered, elevated cement storage</td><td>Keeps bags dry and off the ground on wooden pallets</td></tr>
+          <tr><td>Covered steel storage</td><td>Prevents surface rusting that weakens bonding with concrete</td></tr>
+          <tr><td>All-weather approach road</td><td>Keeps deliveries moving even after rain</td></tr>
+          <tr><td>Adjusted curing schedule</td><td>Accounts for high ambient humidity during monsoon</td></tr>
+        </tbody>
+      </table>
+      <h2>5. Set Up Water and Power Supply in Advance</h2>
+      <p>Construction needs a dependable water source for mixing and curing, and continuous power for tools and pumps — especially for de-watering a flooded excavation pit during monsoon.</p>
+      <ul>
+        <li>Arrange a borewell or water connection before the start date</li>
+        <li>Set up a temporary electricity connection with a backup generator for storm-related power cuts</li>
+      </ul>
+      <h2>6. Fix a Realistic Payment and Delivery Schedule</h2>
+      <p>Material delivery is tied to payment milestones. A delayed payment means suppliers hold back the next batch, stalling the schedule even if the site is ready.</p>
+      <ul>
+        <li>Agree on milestone-based payments tied to construction stages — foundation, plinth, superstructure, roofing, finishing</li>
+        <li>Keep funds ready in advance for each stage so there's no gap between material needed and material paid for</li>
+      </ul>
+      <h2>7. Coordinate with Neighbors and Local Authorities</h2>
+      <p>In dense urban pockets of Lucknow, shared walls, truck access, or noise timing rules can cause disputes that pause work.</p>
+      <ul>
+        <li>Inform immediate neighbors ahead of time</li>
+        <li>Confirm truck access timings allowed by the local ward</li>
+        <li>Resolve boundary questions before excavation starts, not after</li>
+      </ul>
+      <h2>Our Recommendation</h2>
+      <p>For customers building in Lucknow right now, the two things that matter most are drainage and covered storage. Sort these out before the first rain — not after the first flooded pit — and build a 10–15% time buffer into your schedule so a few rainy days don't throw off the whole project.</p>
+    `,
+  },
 export const blogCategories = {
   cement: "Cement",
   steel: "Steel",
