@@ -423,7 +423,6 @@ export const blogs: Blog[] = [
       <p>For customers building in Lucknow right now, the two things that matter most are drainage and covered storage. Sort these out before the first rain — not after the first flooded pit — and build a 10–15% time buffer into your schedule so a few rainy days don't throw off the whole project.</p>
     `,
   },
-  };
 export const blogCategories = {
   cement: "Cement",
   steel: "Steel",
