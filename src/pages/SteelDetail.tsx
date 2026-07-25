@@ -27,13 +27,13 @@ const BAR_WEIGHT_KG: Record<string, number> = {
 // This is the exact amount the customer will be charged per bar
 // ─────────────────────────────────────────────────────────────────
 const RHL_PRICE_PER_BAR: Record<string, number> = {
-  "8mm":  318,    // ₹ per 12m bar
-  "10mm": 479,
-  "12mm": 692,
-  "16mm": 1232,
-  "20mm": 1948,
-  "25mm": 3035,
-  "32mm": 5106,
+  "8mm":  306,    // ₹ per 12m bar
+  "10mm": 460,
+  "12mm": 665,
+  "16mm": 1182,
+  "20mm": 11874,
+  "25mm": 2919,
+  "32mm": 4918,
 };
 
 // ─────────────────────────────────────────────────────────────────
@@ -42,13 +42,13 @@ const RHL_PRICE_PER_BAR: Record<string, number> = {
 // Just change the number after each size below
 // ─────────────────────────────────────────────────────────────────
 const SIGMA_PRICE_PER_KG: Record<string, number> = {
-  "8mm":  60,   // ₹ per kg
-  "10mm": 58,
-  "12mm": 58,
-  "16mm": 58,
-  "20mm": 58,
-  "25mm": 58,
-  "32mm": 58,
+  "8mm":  57,   // ₹ per kg
+  "10mm": 55,
+  "12mm": 55,
+  "16mm": 55,
+  "20mm": 55,
+  "25mm": 55,
+  "32mm": 55,
 };
 
 const SteelDetail = () => {
